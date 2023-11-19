@@ -30,19 +30,26 @@ Roles: There will be 3 main roles:
 
 <img width="1931" alt="Tables" src="https://github.com/Famblablap/UrFam_back/assets/141185519/55ce0f63-ba25-4ede-8417-86e0d9db31fc">
 
-### GameLister Features
-- Platform catalogue.
-- A vast collection of games with detailed information on each title.
-- User profile.
-- OWNED: History of owned games or willing to buy.
-- STATUS: The ability to create profiles to track games they've played, are playing, or want to play in the future.
-- Ability to provide ratings and write reviews to share opinions.
-- Offer a news section that delivers updates about the gaming industry.
-- Filters by game, genre, year, etc.
-- Website
-- DataBase
-- Gamification: gamification elements like badges, achievements, and rewards for users who actively engage with the platform, such as writing insightful reviews or contributing valuable content.
-- Games recommendations by AI based on your profile.
+### UrFam Features
+- Interactive Feed: Posts, Like and Comment Features, Friends and Relatives List, User Profiles, Direct Messaging
+- Navigational Left Sidebar: Home, Photo Gallery, Video Library, Resource Links, Message Center, Notification Alerts
+- Functional Right Sidebar: User Directory
+- Website Footer: Copyright Information, Company Overview, Privacy Practices, Cookie Usage Policy
+- Birthday Notification System
+- Early Childhood Education in New Technologies
+- Providing a Controlled Environment for Children's Social Media Use
+- Developing a Social Network Focused on Local Community Engagement
+- Promoting Best Practices and Responsible Social Media Usage
+- Facilitating Relationship Building
+- Enhancing Digital and Personal Skill Development
+  
+## Upcoming features
+- Anti-Bullying Measures in Schools
+- Strengthening Community Cohesion Within School Groups
+- Offering a Platform for Teachers to Monitor Students' Digital Behavior
+- Managing Negligent or Inappropriate Online Behaviors
+- Social Event Planner with Calendar and Availability Features
+- Integrated Geolocation Services
 
 ### Relationships between tables:
 
