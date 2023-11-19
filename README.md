@@ -27,8 +27,8 @@ Roles: There will be 3 main roles:
     - Ability to share and interact within a controlled environment.
 
 ### Tables:
-![image](https://github.com/Dokh0/GameLister/assets/139643932/fa9a3b21-093d-48fb-a322-be9fd16c7102)
 
+<img width="1931" alt="Tables" src="https://github.com/Famblablap/UrFam_back/assets/141185519/55ce0f63-ba25-4ede-8417-86e0d9db31fc">
 
 ### GameLister Features
 - Platform catalogue.
