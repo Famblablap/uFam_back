@@ -56,19 +56,26 @@ Roles: There will be 3 main roles:
 #### One to one:
 - Ref: users.user_id - contactInfo.user_id
 #### One to many:
-- Ref: catalogue.catalogue_id < comments.catalogue_id
-- Ref: collection.catalogue_id < catalogue.catalogue_id
-- Ref: users.user_id < comments.user_id
-
-#### Many to many:
-- Ref: platform.platform_id <> platform_catalogue.platform_id
-- Ref: catalogue.catalogue_id <> platform_catalogue.catalogue_id
-- Ref: users.user_id <> user_catalogue.user_id
-- Ref: catalogue.catalogue_id <> user_catalogue.catalogue_id
+- Ref: "users"."user_id" < "comments"."user_id"
+- Ref: "photos"."photo_id" < "comments"."photo_id"
+- Ref: "videos"."video_id" < "comments"."video_id"
+- Ref: "users"."user_id" < "photos"."user_id"
+- Ref: "users"."user_id" < "videos"."user_id"
+- Ref: "contactInfo"."user_id" - "users"."user_id"
+- Ref: "users"."user_id" < "likes"."user_id"
+- Ref: "photos"."photo_id" < "likes"."photo_id"
+- Ref: "videos"."video_id" < "likes"."video_id"
+- Ref: "messages"."sender_id" > "users"."user_id"
+- Ref: "messages"."receiver_id" > "users"."user_id"
+- Ref: "notifications"."user_id" > "users"."user_id"
+- Ref: "uploadedPhotos"."user_id" > "users"."user_id"
+- Ref: "uploadedPhotos"."photo_id" > "photos"."photo_id"
+- Ref: "uploadedVideos"."user_id" > "users"."user_id"
+- Ref: "uploadedVideos"."video_id" > "videos"."video_id"
 
 ### Authentication Endpoints
 The Authentication flow for the application is:
-![image](https://github.com/VeronicaRamirezMoreno/Project-2-API-Rest/assets/122170615/c4cb04e0-a87f-4aaf-b399-c74427c46ed8)
+
 
 
 ## Endpoints
