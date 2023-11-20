@@ -17,7 +17,7 @@ function launchServer() {
         .use(cors())
         .use(morgan('dev'))
         .use(express.json())
-        // .use('/api', require('./api/routes/index'))
+        .use('/api', require('./api/router/auth.router'))
         .listen(process.env.PORT, () => {
             console.log("Express server listening on port " + process.env.PORT)
         })
