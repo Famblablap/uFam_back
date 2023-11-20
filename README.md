@@ -16,13 +16,14 @@ Roles: There will be 3 main roles:
     - Manages the entire platform.
     - Access to all administrative functions, such as content moderation, user account management, data analysis, etc.
 
-- Parents:
+- Master:
+    - Unique account from family account set up.
     - Supervision and control of their children's accounts.
     - Access to tools for managing the privacy and security of their children's accounts.
     - Ability to view and moderate content shared by their children.
 
-- Kids:
-    - Limited access compared to adults.
+- Users:
+    - Limited access compared to master.
     - Features focused on safe interaction, learning, and educational entertainment.
     - Ability to share and interact within a controlled environment.
 
@@ -66,6 +67,10 @@ Roles: There will be 3 main roles:
 - Ref: "users"."user_id" < "blogs"."blog"
 
 #### Many to many
+- Ref: "users"."user_id" <> "comments_videos"."user_id"
+- Ref: "videos"."video_id" <> "comments_videos"."video_id"
+- Ref: "users"."user_id" <> "comments_photos"."user_id"
+- Ref: "comments_photos"."photo_id" <> "photos"."photo_id"
 
 ### Authentication Endpoints
 The Authentication flow for the application is:
@@ -102,20 +107,20 @@ GET    | /api/users/:id         | YES   | user/admin | Get user by id           
 PUT    | /api/users/:id         | YES   | user/admin | Edit user profile          | `name`, `email`, `dob`, `password`, `profile_picture`      | { message: 'User updated' }
 DELETE | /api/users/:id         | YES   | user/admin | Delete user account        | -                                                         | { message: 'User deleted' }
 
-### Parent Endpoints
+### Master Endpoints
 
 METHOD | ENDPOINT                 | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                                               | RETURNS
 -------|--------------------------|-------|----------|----------------------------|-----------------------------------------------------------|--------------------
-POST   | /api/parents/kids        | YES   | parent   | Create kid account         | `name`, `dob`, `profile_picture`                           | { kid_user_id, name }
-GET    | /api/parents/kids        | YES   | parent   | Get all kids               | -                                                         | [{ kids }]
-PUT    | /api/parents/kids/:kidId | YES   | parent   | Update kid's account       | `name`, `dob`, `profile_picture`                           | { message: 'Kid updated' }
-DELETE | /api/parents/kids/:kidId | YES   | parent   | Delete kid's account       | -                                                         | { message: 'Kid deleted' }
+POST   | /api/master/kids        | YES   | parent   | Create kid account         | `name`, `dob`, `profile_picture`                           | { kid_user_id, name }
+GET    | /api/master/kids        | YES   | parent   | Get all kids               | -                                                         | [{ kids }]
+PUT    | /api/master/kids/:kidId | YES   | parent   | Update kid's account       | `name`, `dob`, `profile_picture`                           | { message: 'Kid updated' }
+DELETE | /api/master/kids/:kidId | YES   | parent   | Delete kid's account       | -                                                         | { message: 'Kid deleted' }
 
 ### Kids Endpoints
 
 METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION               | POST PARAMS                          | RETURNS
 -------|------------------------|-------|-----------|---------------------------|--------------------------------------|--------------------
-POST   | /api/kids/photos       | YES   | kid       | Upload photo by kid       | `image_url`                          | { photo }
+POST   | /api/user/photos       | YES   | kid       | Upload photo by kid       | `image_url`                          | { photo }
 POST   | /api/kids/videos       | YES   | kid       | Upload video by kid       | `video_url`                          | { video }
 GET    | /api/kids/messages     | YES   | kid       | Get messages for a kid    | -                                    | [{ messages }]
 POST   | /api/kids/messages     | YES   | kid       | Send a message by a kid   | `receiver_id`, `message`             | { message }
