@@ -53,25 +53,19 @@ Roles: There will be 3 main roles:
 
 ### Relationships between tables:
 
-#### One to one:
-- Ref: users.user_id - contactInfo.user_id
 #### One to many:
-- Ref: "users"."user_id" < "comments"."user_id"
-- Ref: "photos"."photo_id" < "comments"."photo_id"
-- Ref: "videos"."video_id" < "comments"."video_id"
 - Ref: "users"."user_id" < "photos"."user_id"
 - Ref: "users"."user_id" < "videos"."user_id"
-- Ref: "contactInfo"."user_id" - "users"."user_id"
 - Ref: "users"."user_id" < "likes"."user_id"
 - Ref: "photos"."photo_id" < "likes"."photo_id"
 - Ref: "videos"."video_id" < "likes"."video_id"
 - Ref: "messages"."sender_id" > "users"."user_id"
 - Ref: "messages"."receiver_id" > "users"."user_id"
 - Ref: "notifications"."user_id" > "users"."user_id"
-- Ref: "uploadedPhotos"."user_id" > "users"."user_id"
-- Ref: "uploadedPhotos"."photo_id" > "photos"."photo_id"
-- Ref: "uploadedVideos"."user_id" > "users"."user_id"
-- Ref: "uploadedVideos"."video_id" > "videos"."video_id"
+- Ref: "families"."user_id" < "users"."user_id"
+- Ref: "users"."user_id" < "blogs"."blog"
+
+#### Many to many
 
 ### Authentication Endpoints
 The Authentication flow for the application is:
@@ -87,15 +81,26 @@ METHOD | ENDPOINT         | TOKEN | ROLE | DESCRIPTION              | POST PARAM
 POST   | /auth/signup     | -     | user/admin | User Signup              | `name`, `email`, `dob`, `password` | { user_id, name, email }
 POST   | /auth/login      | YES     | user/admin | User Login               | `email`, `password`                             | { token: `token` }
 
+### Families Endpoints
+METHOD | ENDPOINT                | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS               | RETURNS
+-------|-------------------------|-------|-----------|------------------------------|---------------------------|--------------------
+POST   | /api/families           | YES   | user      | Create a family              | `user_id`                 | { family_id }
+GET    | /api/families/:id       | YES   | user      | Get family by id             | -                         | { family }
+GET    | /api/families           | YES   | user/admin | Get all families              | -                         | [{ families }]
+PUT    | /api/families/:id       | YES   | user      | Update family details        | `user_id`                 | { message: 'Family updated' }
+DELETE | /api/families/:id       | YES   | user      | Delete family                | -                         | { message: 'Family deleted' }
+
 
 ### User Endpoints
 
-METHOD | ENDPOINT            | TOKEN | ROLE     | DESCRIPTION             | POST PARAMS                                               | RETURNS
--------|---------------------|-------|----------|-------------------------|-----------------------------------------------------------|--------------------
-GET    | /api/users          | YES   | admin    | Get all users           | -                                                         | [{ users }]
-GET    | /api/users/:id      | YES   | user/admin | Get user by id          | -                                                         | { user }
-PUT    | /api/users/:id      | YES   | user     | Edit user profile       | `name`, `email`, `dob`, `password`, `profile_picture`      | { message: 'User updated' }
-DELETE | /api/users/:id      | YES   | user     | Delete user account     | -                                                         | { message: 'User deleted' }
+METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION                | POST PARAMS                                               | RETURNS
+-------|------------------------|-------|-----------|----------------------------|-----------------------------------------------------------|--------------------
+POST   | /api/users/signup      | NO    | -         | User Signup                | `name`, `email`, `dob`, `password`, `profile_picture`      | { user_id, name, email }
+POST   | /api/users/login       | NO    | -         | User Login                 | `email`, `password`                                       | { token: `token` }
+GET    | /api/users             | YES   | admin     | Get all users              | -                                                         | [{ users }]
+GET    | /api/users/:id         | YES   | user/admin | Get user by id             | -                                                         | { user }
+PUT    | /api/users/:id         | YES   | user/admin | Edit user profile          | `name`, `email`, `dob`, `password`, `profile_picture`      | { message: 'User updated' }
+DELETE | /api/users/:id         | YES   | user/admin | Delete user account        | -                                                         | { message: 'User deleted' }
 
 ### Parent Endpoints
 
@@ -117,33 +122,34 @@ POST   | /api/kids/messages     | YES   | kid       | Send a message by a kid   
 
 ### Comments Endpoints
 
-METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION               | POST PARAMS                         | RETURNS
--------|------------------------|-------|----------|---------------------------|-------------------------------------|--------------------
-GET    | /api/comments          | YES   | user/admin | Get all comments           | -                                    | [{ comments }]
-GET    | /api/comments/:id      | YES   | user/admin | Get comment by id          | -                                    | { comment }
-POST   | /api/comments          | YES   | user     | Post a comment            | `comment_text`, `user_id`, `photo_id`, `video_id` | { comment }
-PUT    | /api/comments/:id      | YES   | user     | Edit comment              | `comment_text`                       | { message: 'Comment updated' }
-DELETE | /api/comments/:id      | YES   | user     | Delete comment            | -                                    | { message: 'Comment deleted' }
+METHOD | ENDPOINT                     | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS                          | RETURNS
+-------|------------------------------|-------|-----------|------------------------------|--------------------------------------|--------------------
+POST   | /api/comments/photos         | YES   | user      | Post a comment on a photo    | `comment_text`, `user_id`, `photo_id` | { comment }
+GET    | /api/comments/photos/:id     | YES   | user/admin | Get photo comment by id       | -                                    | { comment }
+DELETE | /api/comments/photos/:id     | YES   | user      | Delete photo comment         | -                                    | { message: 'Comment deleted' }
+POST   | /api/comments/videos         | YES   | user      | Post a comment on a video    | `comment_text`, `user_id`, `video_id` | { comment }
+GET    | /api/comments/videos/:id     | YES   | user/admin | Get video comment by id       | -                                    | { comment }
+DELETE | /api/comments/videos/:id     | YES   | user      | Delete video comment         | -                                    | { message: 'Comment deleted' }
 
 ### Photos Endpoints
 
-METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                          | RETURNS
--------|------------------------|-------|----------|----------------------------|--------------------------------------|--------------------
+METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION                | POST PARAMS                          | RETURNS
+-------|------------------------|-------|-----------|----------------------------|--------------------------------------|--------------------
+POST   | /api/photos            | YES   | user      | Upload a photo             | `image_url`, `user_id`               | { photo }
+GET    | /api/photos/:id        | YES   | user      | Get photo by id            | -                                    | { photo }
 GET    | /api/photos            | YES   | user/admin | Get all photos              | -                                    | [{ photos }]
-GET    | /api/photos/:id        | YES   | user/admin | Get photo by id             | -                                    | { photo }
-POST   | /api/photos            | YES   | user     | Upload a new photo         | `image_url`, `user_id`               | { photo }
-PUT    | /api/photos/:id        | YES   | user     | Update a photo             | `image_url`                          | { message: 'Photo updated' }
-DELETE | /api/photos/:id        | YES   | user     | Delete a photo             | -                                    | { message: 'Photo deleted' }
+PUT    | /api/photos/:id        | YES   | user      | Update photo details       | `image_url`                          | { message: 'Photo updated' }
+DELETE | /api/photos/:id        | YES   | user      | Delete photo               | -                                    | { message: 'Photo deleted' }
 
 ### Videos Endpoints
 
-METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                          | RETURNS
--------|------------------------|-------|----------|----------------------------|--------------------------------------|--------------------
+METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION                | POST PARAMS                          | RETURNS
+-------|------------------------|-------|-----------|----------------------------|--------------------------------------|--------------------
+POST   | /api/videos            | YES   | user      | Upload a video             | `video_url`, `user_id`               | { video }
+GET    | /api/videos/:id        | YES   | user      | Get video by id            | -                                    | { video }
 GET    | /api/videos            | YES   | user/admin | Get all videos              | -                                    | [{ videos }]
-GET    | /api/videos/:id        | YES   | user/admin | Get video by id             | -                                    | { video }
-POST   | /api/videos            | YES   | user     | Upload a new video         | `video_url`, `user_id`               | { video }
-PUT    | /api/videos/:id        | YES   | user     | Update a video             | `video_url`                          | { message: 'Video updated' }
-DELETE | /api/videos/:id        | YES   | user     | Delete a video             | -                                    | { message: 'Video deleted' }
+PUT    | /api/videos/:id        | YES   | user      | Update video details       | `video_url`                          | { message: 'Video updated' }
+DELETE | /api/videos/:id        | YES   | user      | Delete video               | -                                    | { message: 'Video deleted' }
 
 ### Likes Endpoints
 
@@ -151,7 +157,6 @@ METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION                
 -------|------------------------|-------|----------|----------------------------|--------------------------------------|--------------------
 GET    | /api/likes             | YES   | user/admin | Get all likes               | -                                    | [{ likes }]
 POST   | /api/likes             | YES   | user     | Like a photo/video         | `user_id`, `photo_id`, `video_id`    | { like }
-PUT    | /api/likes/:id         | YES   | user     | Update a like              | `photo_id`, `video_id`               | { message: 'Like updated' }
 DELETE | /api/likes/:id         | YES   | user     | Remove a like              | -                                    | { message: 'Like removed' }
 
 ### Messages Endpoints
@@ -166,10 +171,18 @@ DELETE | /api/messages/:id      | YES   | user     | Delete a message           
 
 ### Notifications Endpoints
 
-METHOD | ENDPOINT                | TOKEN | ROLE     | DESCRIPTION                 | POST PARAMS                                       | RETURNS
--------|-------------------------|-------|----------|-----------------------------|---------------------------------------------------|--------------------
-GET    | /api/notifications      | YES   | user     | Get all notifications       | -                                                 | [{ notifications }]
-GET    | /api/notifications/:id  | YES   | user     | Get notification by id      | -                                                 | { notification }
-POST   | /api/notifications      | YES   | admin    | Create a new notification   | `user_id`, `type`, `content`, `is_read`, `date_time` | { notification }
-PUT    | /api/notifications/:id  | YES   | user     | Update a notification       | `type`, `content`, `is_read`, `date_time`           | { message: 'Notification updated' }
-DELETE | /api/notifications/:id  | YES   | user     | Delete a notification       | -                                                 | { message: 'Notification deleted' }
+METHOD | ENDPOINT                 | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS                                                        | RETURNS
+-------|--------------------------|-------|-----------|------------------------------|--------------------------------------------------------------------|--------------------
+POST   | /api/notifications       | YES   | user/admin | Create a notification        | `user_id`, `content`, `video_id`, `photo_id`, `comment_id`, `like_id`, `blog_id` | { notification }
+GET    | /api/notifications/:id   | YES   | user      | Get notification by id       | -                                                                  | { notification }
+DELETE | /api/notifications/:id   | YES   | user      | Delete a notification        | -                                                                  | { message: 'Notification deleted' }
+
+### Blog Endpoints
+
+METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION                | POST PARAMS                          | RETURNS
+-------|------------------------|-------|-----------|----------------------------|--------------------------------------|--------------------
+POST   | /api/blogs             | YES   | user      | Create a blog              | `user_id`, `blog`                    | { blog }
+GET    | /api/blogs/:id         | YES   | user/admin | Get blog by id              | -                                    | { blog }
+GET    | /api/blogs             | YES   | user/admin | Get all blogs               | -                                    | [{ blogs }]
+PUT    | /api/blogs/:id         | YES   | user      | Update blog details        | `blog`                               | { message: 'Blog updated' }
+DELETE | /api/blogs/:id         | YES   | user      | Delete blog                | -                                    | { message: 'Blog deleted' }
