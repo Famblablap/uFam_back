@@ -6,6 +6,8 @@ const blogRouter = require('./blog.router')
 const likeRouter = require('./like.router')
 const photoRouter = require('./photo.router')
 const commentRouter = require('./comment.router')
+const familyRouter = require("./family.router")
+const notificationRouter = require("./notification.router")
 // const messageRouter = require('./message.router')
 
 router.use('/auth', authRouter)
@@ -14,6 +16,9 @@ router.use('/blog', blogRouter)
 router.use('/like', likeRouter)
 router.use('/photo', photoRouter)
 router.use('/comments', commentRouter)
+router.use("/families", familyRouter)
+router.use("/notifications", notificationRouter)
+
 
 // router.use('/messages', messageRouter)
 
