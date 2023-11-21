@@ -4,7 +4,6 @@ const morgan = require("morgan")
 require("dotenv").config()
 const { checkConnection, syncModels } = require("./database/index")
 const { setRelations } = require("./database/models")
-const { start } = require("repl")
 
 async function connectDB() {
     await checkConnection()
