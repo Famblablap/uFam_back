@@ -22,19 +22,27 @@ function checkAuth(req, res, next) {
 }
 
 function checkAdmin(req, res, next) {
-  if (res.locals.user.role === "admin") {
-    next();
-  } else {
-    return res.status(401).send("User not authorized");
-  }
+    if (res.locals.user.role === 'admin') {
+        next()
+    } else {
+        return res.status(401).send('User not authorized')
+    }
 }
 
-function checkMaster(req, res, next) {
-  if (res.locals.user.role === "admin" || res.locals.user.role === "master") {
-    next();
-  } else {
-    return res.status(401).send("User not authorized");
-  }
+function checkMaster(req, res, next){
+    if (res.locals.user.role === 'admin' || res.locals.user.role === 'master'){
+        next()
+    } else {
+        return res.status(401).send('User not authorized')
+    }
 }
 
-module.exports = { checkAuth, checkAdmin, checkMaster };
+function checkUser(req, res, next){
+    if (res.locals.user.role === 'admin' || res.locals.user.role === 'master' || res.locals.user.role === 'user') {
+        next()
+    } else {
+        return res.status(401).send('User not authorized')
+    }
+}
+
+module.exports = { checkAuth, checkAdmin, checkMaster, checkUser }
