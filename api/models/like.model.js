@@ -1,3 +1,4 @@
+const { DataTypes } = require('sequelize')
 const { sequelize } = require('../../database/index')
 
 const Like = sequelize.define(

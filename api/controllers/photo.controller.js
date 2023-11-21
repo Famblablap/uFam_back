@@ -21,7 +21,8 @@ async function getOnePhoto(req, res) {
 
 async function createPhoto(req, res) {
     try {
-        const photo = await Photo.create(req.body)
+        const photoUrl = req.file.path
+        const photo = await Photo.create({ ...req.body, photoUrl })
         return res.status(200).json(photo)
     } catch (error) {
         return res.status(500).send(error.message)
