@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { signup, login } = require('../controller/auth.controller')
+const { signup, login } = require('../controllers/auth.controller')
 
         
 router.post('/signup', signup)
