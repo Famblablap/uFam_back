@@ -1,15 +1,15 @@
-const Video = require ('../models/video.model')
+const Video = require('../models/video.model')
 
-async function getAllVideos (req, res){
+async function getAllVideos(req, res) {
     try {
-        const photos = await Video.findAll()
+        const videos = await Video.findAll()
         return res.status(200).json(videos)
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
 
-async function getOneVideo (req, res){
+async function getOneVideo(req, res) {
     try {
         const video = await Video.findByPk(req.params.id)
         if (!video) { res.status(500).send('Video not found') }
@@ -19,13 +19,12 @@ async function getOneVideo (req, res){
     }
 }
 
-async function createVideo (req, res){
+async function createVideo(req, res) {
     try {
         const video = await Video.create(req.body)
         return res.status(200).json(video)
     } catch (error) {
         return res.status(500).send(error.message)
-    
     }
 }
 
@@ -34,11 +33,11 @@ async function deleteVideo(req, res) {
         const video = await Video.destroy({
             where: {
                 id: req.params.id
-            },
+            }
         })
         res.status(500).json({ text: 'Video removed', video: video })
     } catch (error) {
-
+        return res.status(500).send(error.message)
     }
 }
 

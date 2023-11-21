@@ -1,7 +1,6 @@
-const Photo = require ('../models/photo.model')
-const Comment_Photos = require ('../models/comment_photos.model')
+const Photo = require('../models/photo.model')
 
-async function getAllPhotos (req, res){
+async function getAllPhotos(req, res) {
     try {
         const photos = await Photo.findAll()
         return res.status(200).json(photos)
@@ -10,7 +9,7 @@ async function getAllPhotos (req, res){
     }
 }
 
-async function getOnePhoto (req, res){
+async function getOnePhoto(req, res) {
     try {
         const photo = await Photo.findByPk(req.params.id)
         if (!photo) { res.status(500).send('Photo not found') }
@@ -20,20 +19,10 @@ async function getOnePhoto (req, res){
     }
 }
 
-async function createPhoto (req, res){
+async function createPhoto(req, res) {
     try {
         const photo = await Photo.create(req.body)
         return res.status(200).json(photo)
-    } catch (error) {
-        return res.status(500).send(error.message)
-    
-    }
-}
-
-async function createPhotoComment (req, res){
-    try {
-        const commentPhoto = await Comment_Photos.create(req.body)
-        return res.status(200).json(commentPhoto)
     } catch (error) {
         return res.status(500).send(error.message)
     }
@@ -41,14 +30,14 @@ async function createPhotoComment (req, res){
 
 async function deletePhoto(req, res) {
     try {
-        const blog = await Photo.destroy({
+        const photo = await Photo.destroy({
             where: {
                 id: req.params.id
-            },
+            }
         })
         res.status(500).json({ text: 'Photo removed', photo: photo })
     } catch (error) {
-
+        return res.status(500).send(error.message)
     }
 }
 
