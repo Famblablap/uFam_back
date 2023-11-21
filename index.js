@@ -13,13 +13,13 @@ async function connectDB() {
 
 function launchServer() {
     const app = express()
-        .use(cors())
-        .use(morgan('dev'))
-        .use(express.json())
-        .use('/api', require('./api/routes/auth.router'))
-        .listen(process.env.DB_PORT, () => {
-            console.log("Express server listening on port " + process.env.DB_PORT)
-        })
+    .use(cors())
+    .use(morgan('dev'))
+    .use(express.json())
+    .use('/api', require('./api/routes/index.js'))
+    .listen(process.env.PORT, () => {
+        console.log("Express server listening on port 3000")
+    })
 }
 
 async function startAPI() {
