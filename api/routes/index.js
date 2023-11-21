@@ -11,7 +11,7 @@ router.use('/auth', authRouter)
 router.use('/user', userRouter)
 router.use('/blog', blogRouter) 
 router.use('/like', likeRouter)
-router.use('/message', messageRouter)
+router.use('/messages', messageRouter)
 
 
 module.exports = router

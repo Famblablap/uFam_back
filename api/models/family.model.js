@@ -1,12 +1,22 @@
-const { sequelize } = require('../../database/index')
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../../database/index");
 
 const Family = sequelize.define(
-     'family', {
-        
+  "family",
+  {
+    family_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    
-{
-     timestamps: false
-})
+    userId: {
+     type: DataTypes.INTEGER,
+     allowNull: false,
+    }
+  },
 
-module.exports = Family
+  {
+    timestamps: false,
+  }
+);
+
+module.exports = Family;
