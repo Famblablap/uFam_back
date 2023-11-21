@@ -11,7 +11,7 @@ async function getAllUsers (req, res){
 
 async function getOneUser (req, res){
     try {
-        const user = await User.findOne()
+        const user = await User.findByPk(req.params.id)
         if (!user) { res.status(500).send('User not found') }
         return res.status(200).json(user)
     } catch (error) {

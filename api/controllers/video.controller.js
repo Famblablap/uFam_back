@@ -11,7 +11,7 @@ async function getAllVideos (req, res){
 
 async function getOneVideo (req, res){
     try {
-        const video = await Video.findOne()
+        const video = await Video.findByPk(req.params.id)
         if (!video) { res.status(500).send('Video not found') }
         return res.status(200).json(video)
     } catch (error) {

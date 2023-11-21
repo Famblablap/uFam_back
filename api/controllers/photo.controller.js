@@ -12,7 +12,7 @@ async function getAllPhotos (req, res){
 
 async function getOnePhoto (req, res){
     try {
-        const photo = await Photo.findOne()
+        const photo = await Photo.findByPk(req.params.id)
         if (!photo) { res.status(500).send('Photo not found') }
         return res.status(200).json(photo)
     } catch (error) {
