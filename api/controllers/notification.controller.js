@@ -2,6 +2,8 @@ const Notification = require('../models/notification.model');
 
 async function createNotification(req, res) {
     try {
+        console.log(req.body)
+        console.log(req.user)
         const notification = await Notification.create({
             content: req.body.content,
             video_id: req.body.video_id,
@@ -13,6 +15,7 @@ async function createNotification(req, res) {
         });
         return res.status(200).json(notification);
     } catch (error) {
+        console.error(error)
         return res.status(500).send(error.message);
     }
 }

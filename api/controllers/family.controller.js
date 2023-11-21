@@ -45,6 +45,9 @@ async function updateFamily(req, res) {
     }
 }
 
+//res.local.id 
+//master can delete, update
+
 async function deleteFamily(req, res) {
     try {
         const deleted = await Family.destroy({
@@ -58,6 +61,8 @@ async function deleteFamily(req, res) {
         return res.status(500).send(error.message);
     }
 }
+
+//if role master->delete family
 
 module.exports = {
     createFamily,
