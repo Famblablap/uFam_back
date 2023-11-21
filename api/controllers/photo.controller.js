@@ -1,4 +1,5 @@
 const Photo = require ('../models/photo.model')
+const Comment_Photos = require ('../models/comment_photos.model')
 
 async function getAllPhotos (req, res){
     try {
@@ -26,6 +27,15 @@ async function createPhoto (req, res){
     } catch (error) {
         return res.status(500).send(error.message)
     
+    }
+}
+
+async function createPhotoComment (req, res){
+    try {
+        const commentPhoto = await Comment_Photos.create(req.body)
+        return res.status(200).json(commentPhoto)
+    } catch (error) {
+        return res.status(500).send(error.message)
     }
 }
 
