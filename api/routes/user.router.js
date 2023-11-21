@@ -3,9 +3,9 @@ const { checkAuth, checkAdmin } = require('../middleware/index')
 const router = require('express').Router()
 
 //CRUD básico de User
-router.get('/', checkAuth, checkAdmin, getAllUsers)
+router.get('/', getAllUsers)
 router.get('/:id', checkAuth, checkAdmin, getOneUser)
-router.get('/profile', checkAuth, getProfile)
+router.get('/profile', getProfile)
 router.get('/profile/:id', checkAuth, getFamProfile)
 router.post('/', checkAuth, createUser)
 // router.post('/createFam', createFam)
