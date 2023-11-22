@@ -10,10 +10,10 @@ const {
 } = require("../controllers/user.controller");
 const { checkAuth, checkAdmin, checkMaster } = require("../middleware/index");
 
-router.get("/", checkAuth, checkAdmin, getAllUsers);
-router.get("/profile/:id", checkAuth, getFamProfile);
+router.get("/admin", checkAuth, checkAdmin, getAllUsers);
+router.get("/admin/:id", checkAuth, checkAdmin, getOneUser);
+router.get("/profile/:userId", checkAuth, getFamProfile);
 router.get("/profile", checkAuth, getProfile);
-router.get("/:id", checkAuth, checkAdmin, getOneUser);
 router.post("/", checkAuth, checkMaster, createUser);
 // router.post('/createFam', checkAuth, checkMaster, createFam)
 router.put("/:id", checkAuth, checkMaster, updateUser);

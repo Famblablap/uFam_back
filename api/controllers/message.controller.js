@@ -1,5 +1,6 @@
 const Message = require("../models/message.model");
 const User = require("../models/user.model");
+const Family = require("../models/family.model")
 
 async function getAllMessages(req, res) {
   try {
@@ -27,12 +28,12 @@ async function getAllFamMessages(req, res) {
     if (!user) {
       return res.status(404).send("User not found");
     }
-    if (!user.Family) {
+    if (!user.family) {
       return res.status(404).send("User not found in the family");
     }
     const familyMessage = await Message.findAll({
       where: {
-        familyId: user.Family.id,
+        familyId: user.family.id,
       },
     });
     if (!familyMessage || familyMessage.length === 0) {
@@ -65,21 +66,10 @@ async function getOneMessage(req, res) {
 
 async function getOneFamMessages(req, res) {
     try {
-      const user = await User.findByPk(req.params.userId, {
+      const user = await User.findByPk(req.params.id, {
         include: Family,
       });
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-      if (!user.Family) {
-        return res.status(404).send("User not found in the family");
-      }
-      const familyMessage = await Message.findOne({
-        where: {
-          familyId: user.Family.id,
-        },
-        include: Family,
-      });
+      const familyMessage = await Message.findAll();
       if (!familyMessage || familyMessage.length === 0) {
         return res.status(404).send("Not messages in the Family");
       }
@@ -91,12 +81,24 @@ async function getOneFamMessages(req, res) {
 
 async function createMessage(req, res) {
   try {
-    const message = await Message.create({
-      message: req.body.message,
-    });
-    return res.status(200).json({ message: message });
+      const userR = await User.findByPk(req.params.id)
+      const user = await User.findByPk(res.locals.user.id)
+      const message = await Message.create({
+          message: req.body.message,
+          receiver_id: userR.id
+      })
+      await user.addMessage(message)
+      await userR.addMessage(message)
+      const result = await User.findByPk(req.params.id, {
+          include: Message
+      })
+      if (result) {
+          return res.status(200).json(result)
+      } else {
+          return res.status(404).send('Message not found')
+      }
   } catch (error) {
-    res.status(500).send(error.message);
+      res.status(500).send(error.message)
   }
 }
 

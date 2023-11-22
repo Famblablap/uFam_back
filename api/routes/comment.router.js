@@ -2,12 +2,12 @@ const { getCommentsPhoto, getCommentsVideo, createCommentPhoto, createCommentVid
 
 const router = require('express').Router()
 
-router.get('/commentPhoto', getCommentsPhoto)
-router.get('/commentVideo', getCommentsVideo)
-router.post('/commentPhoto/:photoId', createCommentPhoto)
-router.post('/commentVideo/:videoId', createCommentVideo)
-router.delete('/commentPhoto/:photoId', deleteCommentPhoto)
-router.delete('/commentVideo/:videoId', deleteCommentVideo)
+router.get('/admin', getCommentsPhoto)
+router.get('/admin', getCommentsVideo)
+router.post('/:photoId', createCommentPhoto)
+router.post('/:videoId', createCommentVideo)
+router.delete('/:photoId', deleteCommentPhoto)
+router.delete('/:videoId', deleteCommentVideo)
 
 
 module.exports = router

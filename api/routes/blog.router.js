@@ -10,8 +10,8 @@ const {
 const router = require("express").Router();
 
 //CRUD básico de Blog
-router.get("/", getAllBlogs);
-router.get("/:id", getOneBlog);
+router.get("/admin", getAllBlogs);
+router.get("/admin/:id", getOneBlog);
 router.post("/", createBlog);
 router.put("/:id", updateBlog);
 router.delete("/:id", deleteBlog);

@@ -31,12 +31,12 @@ async function getAllFamProfiles(req, res) {
       if (!user) {
         return res.status(404).send("User not found");
       }
-      if (!user.Family) {
+      if (!user.family) {
         return res.status(404).send("User not found in the family");
       }
       const familyMembers = await User.findAll({
         where: {
-          familyId: user.Family.id,
+          familyId: user.family.id,
         },
         include: Family,
       });
@@ -52,7 +52,7 @@ async function getAllFamProfiles(req, res) {
 
 async function createFamily(req, res) {
     try {
-        const family = await Family.create({ user_id: req.body.user_id })
+        const family = await Family.create({ family_name: req.body.family_name })
         return res.status(200).json(family)
     } catch (error) {
         return res.status(500).send(error.message)
@@ -61,7 +61,7 @@ async function createFamily(req, res) {
 
 async function updateFamily(req, res) {
     try {
-        const [updated] = await Family.update(req.body, {
+        const [updated] = await Family.update(req.body.family_name, {
             where: { family_id: req.params.id }
         })
         if (updated) {
