@@ -9,7 +9,7 @@ const {
 } = require("../controllers/message.controller");
 const { checkAuth, checkAdmin, checkMaster } = require("../middleware/index");
 
-router.get("/", checkAuth, checkMaster, getAllMessages);
+router.get("/", checkAuth, checkAdmin, getAllMessages);
 router.get("/messages/:id", checkAuth, getOneMessage);
 router.post("/messages", checkAuth, createMessage);
 router.put(

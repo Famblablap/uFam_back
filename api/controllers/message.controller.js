@@ -20,6 +20,24 @@ async function getAllMessages(req, res) {
     }
 }
 
+async function getAllFamMessages(req, res) {
+    try {
+        const message = await Message.findAll(res.locals.user.id, {
+            include: {
+                model: User,
+                attributes: ['name'],
+            }
+        })
+        if (message) {
+            return res.status(200).json(message)
+        } else {
+            return res.status(404).send('No message')
+        }
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 async function getOneMessage(req, res) {
     try {
         const message = await Message.findByPk(req.params.id, {

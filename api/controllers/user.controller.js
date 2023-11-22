@@ -36,18 +36,21 @@ async function getProfile(req, res) {
 
 async function getFamProfile(req, res) {
   try {
-    const famProfile = await User.findByPk(req.params.userId);
-    const user = await User.findByPk(res.locals.user.id, {
+    const user = await User.findByPk(req.params.userId, {
       include: Family,
     });
-    if (!user || !user.Family) {
-      return res.status(404).send("User not found in Family");
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    if (!user.Family) {
+      return res.status(404).send("User is not associated with any family");
     }
     const familyMember = await User.findOne({
       where: {
-        id: famProfile,
+        id: res.locals.user.id,
         familyId: user.Family.id,
       },
+      include: Family,
     });
     if (!familyMember) {
       return res.status(404).send("Family member not found");
@@ -57,6 +60,7 @@ async function getFamProfile(req, res) {
     return res.status(500).send(error.message);
   }
 }
+
 
 async function createUser(req, res) {
   try {

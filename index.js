@@ -18,7 +18,7 @@ function launchServer() {
     .use(express.json())
     .use("/api", require("./api/routes/index.js"))
     .listen(process.env.PORT, () => {
-      console.log("Express server listening on port 3000");
+      console.log("Express server listening on port" + process.env.PORT);
     });
 }
 
