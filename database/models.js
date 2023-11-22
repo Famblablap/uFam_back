@@ -8,6 +8,7 @@ const Video = require("../api/models/video.model");
 const Like = require("../api/models/like.model");
 const Comment_Photos = require("../api/models/comment_photos.model");
 const Comment_Videos = require("../api/models/comment_videos.model");
+const VerifiedEmail = require("../api/models/verified_email.model");
 
 function setRelations() {
   try {
@@ -32,6 +33,9 @@ function setRelations() {
 
     Family.hasMany(User);
     User.belongsTo(Family);
+
+    Family.hasMany(VerifiedEmail);
+    VerifiedEmail.belongsTo(Family)
 
     Photo.hasMany(Like);
     Like.belongsTo(Photo);
