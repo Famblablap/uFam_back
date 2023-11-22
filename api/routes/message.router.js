@@ -3,22 +3,18 @@ const router = require("express").Router();
 const {
   getAllMessages,
   getOneMessage,
+  getAllFamMessages,
+  getOneFamMessages,
   createMessage,
-  updateOneMessage,
   deleteOneMessage,
 } = require("../controllers/message.controller");
 const { checkAuth, checkAdmin, checkMaster } = require("../middleware/index");
 
 router.get("/", checkAuth, checkAdmin, getAllMessages);
-router.get("/messages/:id", checkAuth, getOneMessage);
-router.post("/messages", checkAuth, createMessage);
-router.put(
-  "/messages/:id",
-  checkAuth,
-  checkMaster,
-  checkAdmin,
-  updateOneMessage
-);
-router.delete("/messages/:id", checkAuth, deleteOneMessage);
+router.get("/:id", checkAuth, checkAdmin, getOneMessage);
+router.get("/", checkAuth, getAllFamMessages);
+router.get("/:id", checkAuth, getOneFamMessages);
+router.post("/", checkAuth, createMessage);
+router.delete("/:id", checkAuth, checkMaster, deleteOneMessage);
 
 module.exports = router;
