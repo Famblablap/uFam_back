@@ -66,10 +66,16 @@ async function getOneMessage(req, res) {
 
 async function getOneFamMessages(req, res) {
     try {
-      const user = await User.findByPk(req.params.id, {
+      const user = await User.findByPk(res.locals.user.id)
+      const userR = await User.findByPk(req.params.id, {
         include: Family,
       });
-      const familyMessage = await Message.findAll();
+      const familyMessage = await Message.findAll({
+        where: {
+          receiver_id: userR.id,
+          userId: user.id
+        }
+      });
       if (!familyMessage || familyMessage.length === 0) {
         return res.status(404).send("Not messages in the Family");
       }
