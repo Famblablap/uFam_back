@@ -20,48 +20,38 @@ async function getAllMessages(req, res) {
   }
 }
 
-async function getAllFamMessages(req, res) {
+
+
+async function getOneMessage(req, res) {
   try {
-    const user = await User.findByPk(req.params.userId, {
-      include: Family,
-    });
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    if (!user.family) {
-      return res.status(404).send("User not found in the family");
-    }
-    const familyMessage = await Message.findAll({
-      where: {
-        familyId: user.family.id,
+    const message = await Message.findByPk(req.params.id, {
+      include: {
+        model: User,
+        attributes: ["name"],
       },
     });
-    if (!familyMessage || familyMessage.length === 0) {
-      return res.status(404).send("Not messages in the Family");
+    if (message) {
+      return res.status(200).json(message);
+    } else {
+      return res.status(404).send("Message not found");
     }
-    return res.status(200).json(familyMessage);
   } catch (error) {
     return res.status(500).send(error.message);
   }
 }
 
-
-async function getOneMessage(req, res) {
-    try {
-        const message = await Message.findByPk(req.params.id, {
-            include: {
-                model: User,
-                attributes: ["name"],
-            },
-        });
-        if (message) {
-            return res.status(200).json(message);
-        } else {
-            return res.status(404).send("Message not found");
-        }
-    } catch (error) {
-        return res.status(500).send(error.message);
-    }
+async function getAllFamMessages(req, res) {
+  try {
+    const userL = await User.findByPk(res.locals.user.id)
+    const familyMessages = await Message.findAll({
+      where: {
+        userId: userL.id
+      } 
+    }) 
+    return res.status(200).json(familyMessages);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
 }
 
 async function getOneFamMessages(req, res) {
