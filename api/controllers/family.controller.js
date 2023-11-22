@@ -65,9 +65,9 @@ async function deleteFamily(req, res) {
 //if role master->delete family
 
 module.exports = {
-    createFamily,
-    getFamilyById,
     getAllFamilies,
+    getFamilyById,
+    createFamily,
     updateFamily,
     deleteFamily
 }

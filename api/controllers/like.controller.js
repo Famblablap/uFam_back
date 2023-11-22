@@ -17,6 +17,7 @@ async function createLike(req, res) {
         return res.status(500).send(error.message)
     }
 }
+
 async function deleteLike(req, res) {
     try {
         const like = await Like.destroy({
