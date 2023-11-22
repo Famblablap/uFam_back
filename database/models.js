@@ -31,6 +31,12 @@ function setRelations() {
     User.hasMany(Message);
     Message.belongsTo(User);
 
+    User.hasMany(Comment_Photos)
+    Comment_Photos.belongsTo(User)
+
+    User.hasMany(Comment_Videos)
+    Comment_Videos.belongsTo(User)    
+
     Family.hasMany(User);
     User.belongsTo(Family);
 
@@ -39,16 +45,16 @@ function setRelations() {
 
     Photo.hasMany(Like);
     Like.belongsTo(Photo);
+    
+    Photo.hasMany(Comment_Photos)
+    Comment_Photos.belongsTo(Photo)
 
     Video.hasMany(Like);
     Like.belongsTo(Video);
 
-    //Many to many
-    User.belongsToMany(Photo, { through: Comment_Photos });
-    Photo.belongsToMany(User, { through: Comment_Photos });
+    Video.hasMany(Comment_Videos)
+    Comment_Videos.belongsTo(Video)
 
-    User.belongsToMany(Video, { through: Comment_Videos });
-    Video.belongsToMany(User, { through: Comment_Videos });
   } catch (error) {
     console.log(error);
   }
