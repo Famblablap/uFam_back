@@ -1,35 +1,40 @@
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken')
+const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
 function checkAuth(req, res, next) {
-    if (!req.headers.authorization) return res.status(401).send('Token not found')
+  if (!req.headers.authorization)
+    return res.status(401).send("Token not found");
 
-    jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
-        if (err) return res.status(401).send('Token not valid')
+  jwt.verify(
+    req.headers.authorization,
+    process.env.SECRET,
+    async (err, result) => {
+      if (err) return res.status(401).send("Token not valid");
 
-        const user = await User.findOne({ where: { email: result.email }})
-        if(!user) return res.status(401).send('User not found')
+      const user = await User.findOne({ where: { email: result.email } });
+      if (!user) return res.status(401).send("User not found");
 
-        res.locals.user = user
+      res.locals.user = user;
 
-        next()
-    })
+      next();
+    }
+  );
 }
 
 function checkAdmin(req, res, next) {
-    if(res.locals.user.role === 'admin') {
-        next()
-    } else {
-        return res.status(401).send('User not authorized')
-    }
+  if (res.locals.user.role === "admin") {
+    next();
+  } else {
+    return res.status(401).send("User not authorized");
+  }
 }
 
 function checkMaster(req, res, next) {
-    if(res.locals.user.role === 'admin' || res.locals.user.role === 'master') {
-       next() 
-    } else {
-        return res.status(401).send('User not authorized')
-    }
+  if (res.locals.user.role === "admin" || res.locals.user.role === "master") {
+    next();
+  } else {
+    return res.status(401).send("User not authorized");
+  }
 }
 
-module.exports = { checkAuth, checkAdmin, checkMaster }
+module.exports = { checkAuth, checkAdmin, checkMaster };

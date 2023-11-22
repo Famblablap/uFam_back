@@ -1,12 +1,12 @@
-const { sequelize } = require('../../database/index')
+const { sequelize } = require("../../database/index");
 
 const Like = sequelize.define(
-     'like', {
-        
-    },
-    
-{
-     timestamps: false
-})
+  "like",
+  {},
 
-module.exports = Like
+  {
+    timestamps: false,
+  }
+);
+
+module.exports = Like;
