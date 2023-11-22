@@ -39,12 +39,17 @@ function setRelations(){
         Video.hasMany(Like)
         Like.belongsTo(Video)
 
-        //Many to many
-        User.belongsToMany(Photo, {through: Comment_Photos })
-        Photo.belongsToMany(User, { through: Comment_Photos })
+        User.hasMany(Comment_Photos)
+        Comment_Photos.belongsTo(User)
 
-        User.belongsToMany(Video, {through: Comment_Videos })
-        Video.belongsToMany(User, { through: Comment_Videos })
+        Photo.hasMany(Comment_Photos)
+        Comment_Photos.belongsTo(Photo)
+
+        User.hasMany(Comment_Videos)
+        Comment_Videos.belongsTo(User)
+
+        Video.hasMany(Comment_Videos)
+        Comment_Videos.belongsTo(Video)
     
     } catch (error) {
         console.log(error)
