@@ -39,7 +39,7 @@ async function getFamProfile(req, res) {
     const famProfile = await User.findByPk(req.params.userId)
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
-    });
+    })
     if (!user || !user.Family) {
       return res.status(404).send("User not found in Family")
     }
@@ -48,7 +48,7 @@ async function getFamProfile(req, res) {
         id: famProfile,
         familyId: user.Family.id,
       },
-    });
+    })
     if (!familyMember) {
       return res.status(404).send("Family member not found")
     }
