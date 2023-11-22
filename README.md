@@ -83,13 +83,15 @@ The Authentication flow for the application is:
 
 METHOD | ENDPOINT         | TOKEN | ROLE | DESCRIPTION              | POST PARAMS                                     | RETURNS
 -------|------------------|-------|------|--------------------|-------------------------------------------------|--------------------
-POST   | /auth/signup     | -     | user | User Signup              | `name`, `email`, `dob`, `password`              | { user_id, name, email }
-POST   | /auth/login      | YES   | user | User Login               | `email`, `password`                             | { token: `token` }
+
+POST   | /auth/signup     | -     | master/admin | User Signup              | `name`, `email`, `dob`, `password` | { user_id, name, email }
+POST   | /auth/login      | YES     | user/admin | User Login               | `email`, `password`                             | { token: `token` }
+
 
 ### Families Endpoints
 METHOD | ENDPOINT                | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS               | RETURNS
 -------|-------------------------|-------|-----------|------------------------------|---------------------------|--------------------
-POST   | /api/families           | YES   | user      | Create a family              | `user_id`                 | { family_id }
+POST   | /api/families           | YES   | user      | Create a family              | `family_name`                 | { family_id }
 GET    | /api/families/:id       | YES   | user      | Get family by id             | -                         | { family }
 GET    | /api/families           | YES   | user      | Get all families             | -                         | [{ families }]
 PUT    | /api/families/:id       | YES   | user      | Update family details        | `user_id`                 | { message: 'Family updated' }

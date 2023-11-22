@@ -1,14 +1,17 @@
-const { DataTypes } = require('sequelize')
-const { sequelize } = require("../../database/index")
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../../database/index");
 
 const Blog = sequelize.define(
-     'blog', {
-        blog: { 
-            type: DataTypes.STRING, allowNull: false,
-         },
+  "blog",
+  {
+    blog: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-{
-     timestamps: false
-})
+  },
+  {
+    timestamps: false,
+  }
+);
 
-module.exports = Blog
+module.exports = Blog;

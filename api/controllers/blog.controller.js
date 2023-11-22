@@ -11,7 +11,7 @@ async function getAllBlogs (req, res){
 
 async function getOneBlog (req, res){
     try {
-        const blog = await Blog.findOne()
+        const blog = await Blog.findByPk(req.params.id)
         if (!blog) { res.status(500).send('Blog not found') }
         return res.status(200).json(blog)
     } catch (error) {
@@ -22,7 +22,7 @@ async function getOneBlog (req, res){
 async function createBlog(req, res) {
     try {
         const blog = await Blog.create(req.body)
-        return res.status(200).send(blog)
+        return res.status(200).json(blog)
     } catch (error) {
         return res.status(500).send(error.message)
     }
