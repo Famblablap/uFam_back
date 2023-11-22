@@ -1,12 +1,14 @@
-const { getAllUsers, getOneUser, createUser, updateUser, deleteUser } = require('../controllers/user.controller')
+const router = require("express").Router();
+const { getAllUsers, getOneUser, getProfile, getFamProfile, createUser, updateUser, deleteUser } = require("../controllers/user.controller");
+const { checkAuth, checkAdmin, checkMaster } = require("../middleware/index");
 
-const router = require('express').Router()
+router.get("/", checkAuth, checkAdmin, getAllUsers);
+router.get("/:id", checkAuth, checkAdmin, getOneUser);
+router.get("/profile", checkAuth, getProfile);
+router.get("/profile/:id", checkAuth, getFamProfile);
+router.post("/", checkAuth, checkMaster, createUser);
+// router.post('/createFam', checkAuth, checkMaster, createFam)
+router.put("/:id", checkAuth, checkMaster, updateUser);
+router.delete("/:id", checkAuth, checkMaster, deleteUser);
 
-//CRUD básico de User
-router.get('/', getAllUsers)
-router.get('/:id', getOneUser)
-router.post('/', createUser)
-router.put('/:id', updateUser)
-router.delete('/:id', deleteUser)
-
-module.exports = router
+module.exports = router;
