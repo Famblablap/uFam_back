@@ -17,13 +17,21 @@ async function checkConnection() {
     }
 }
 
-async function syncModels() {
+async function syncModels(value) {
+    const state = {
+      alter: { alter: true },
+      force: { force: true },
+    };
+  
     try {
-        await sequelize.sync()
-        console.log('Models Synchronized!')
+      await sequelize.sync(state[value] || "");
+      console.log(
+        `All models were synchronized successfully using sync(${
+          JSON.stringify(state[value]) || ""}).`
+      );
     } catch (error) {
-        throw error
+      throw error;
     }
-}
+  }
 
 module.exports = { sequelize, checkConnection, syncModels}

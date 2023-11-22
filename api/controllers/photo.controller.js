@@ -28,12 +28,13 @@ por el id mientras pertenezca a la familia*/
 async function getFamPhoto(req, res) {
   try {
     const famPhoto = await Photo.findByPk(req.params.photoId);
+    console.log(famPhoto)
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
     const familyPhoto = await Photo.findOne({
       where: {
-        id: famPhoto.id,
+        // id: famPhoto.id,
         familyId: user.family.id,
       },
     });
