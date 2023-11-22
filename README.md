@@ -83,15 +83,17 @@ The Authentication flow for the application is:
 
 METHOD | ENDPOINT         | TOKEN | ROLE | DESCRIPTION              | POST PARAMS                                     | RETURNS
 -------|------------------|-------|------|--------------------|-------------------------------------------------|--------------------
+
 POST   | /auth/signup     | -     | master/admin | User Signup              | `name`, `email`, `dob`, `password` | { user_id, name, email }
 POST   | /auth/login      | YES     | user/admin | User Login               | `email`, `password`                             | { token: `token` }
+
 
 ### Families Endpoints
 METHOD | ENDPOINT                | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS               | RETURNS
 -------|-------------------------|-------|-----------|------------------------------|---------------------------|--------------------
 POST   | /api/families           | YES   | user      | Create a family              | `family_name`                 | { family_id }
 GET    | /api/families/:id       | YES   | user      | Get family by id             | -                         | { family }
-GET    | /api/families           | YES   | user/admin | Get all families              | -                         | [{ families }]
+GET    | /api/families           | YES   | user      | Get all families             | -                         | [{ families }]
 PUT    | /api/families/:id       | YES   | user      | Update family details        | `user_id`                 | { message: 'Family updated' }
 DELETE | /api/families/:id       | YES   | user      | Delete family                | -                         | { message: 'Family deleted' }
 
@@ -103,38 +105,38 @@ METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION               
 POST   | /api/users/signup      | NO    | -         | User Signup                | `name`, `email`, `dob`, `password`, `profile_picture`      | { user_id, name, email }
 POST   | /api/users/login       | NO    | -         | User Login                 | `email`, `password`                                       | { token: `token` }
 GET    | /api/users             | YES   | admin     | Get all users              | -                                                         | [{ users }]
-GET    | /api/users/:id         | YES   | user/admin | Get user by id             | -                                                         | { user }
-PUT    | /api/users/:id         | YES   | user/admin | Edit user profile          | `name`, `email`, `dob`, `password`, `profile_picture`      | { message: 'User updated' }
-DELETE | /api/users/:id         | YES   | user/admin | Delete user account        | -                                                         | { message: 'User deleted' }
+GET    | /api/users/:id         | YES   | user      | Get user by id             | -                                                         | { user }
+PUT    | /api/users/:id         | YES   | user      | Edit user profile          | `name`, `email`, `dob`, `password`, `profile_picture`      | { message: 'User updated' }
+DELETE | /api/users/:id         | YES   | user      | Delete user account        | -                                                         | { message: 'User deleted' }
 
 ### Master Endpoints
 
 METHOD | ENDPOINT                 | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                                               | RETURNS
 -------|--------------------------|-------|----------|----------------------------|-----------------------------------------------------------|--------------------
-POST   | /api/master/kids        | YES   | parent   | Create kid account         | `name`, `dob`, `profile_picture`                           | { kid_user_id, name }
-GET    | /api/master/kids        | YES   | parent   | Get all kids               | -                                                         | [{ kids }]
-PUT    | /api/master/kids/:kidId | YES   | parent   | Update kid's account       | `name`, `dob`, `profile_picture`                           | { message: 'Kid updated' }
-DELETE | /api/master/kids/:kidId | YES   | parent   | Delete kid's account       | -                                                         | { message: 'Kid deleted' }
+POST   | /api/master/kids        | YES   | master   | Create kid account         | `name`, `dob`, `profile_picture`                           | { kid_user_id, name }
+GET    | /api/master/kids        | YES   | master   | Get all kids               | -                                                         | [{ kids }]
+PUT    | /api/master/kids/:kidId | YES   | master   | Update kid's account       | `name`, `dob`, `profile_picture`                           | { message: 'Kid updated' }
+DELETE | /api/master/kids/:kidId | YES   | master   | Delete kid's account       | -                                                         | { message: 'Kid deleted' }
 
 ### Kids Endpoints
 
 METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION               | POST PARAMS                          | RETURNS
 -------|------------------------|-------|-----------|---------------------------|--------------------------------------|--------------------
-POST   | /api/user/photos       | YES   | kid       | Upload photo by kid       | `image_url`                          | { photo }
-POST   | /api/kids/videos       | YES   | kid       | Upload video by kid       | `video_url`                          | { video }
-GET    | /api/kids/messages     | YES   | kid       | Get messages for a kid    | -                                    | [{ messages }]
-POST   | /api/kids/messages     | YES   | kid       | Send a message by a kid   | `receiver_id`, `message`             | { message }
+POST   | /api/user/photos       | YES   | user       | Upload photo by kid       | `image_url`                          | { photo }
+POST   | /api/kids/videos       | YES   | user      | Upload video by kid       | `video_url`                          | { video }
+GET    | /api/kids/messages     | YES   | user       | Get messages for a kid    | -                                    | [{ messages }]
+POST   | /api/kids/messages     | YES   | user       | Send a message by a kid   | `receiver_id`, `message`             | { message }
 
 ### Comments Endpoints
 
 METHOD | ENDPOINT                     | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS                          | RETURNS
 -------|------------------------------|-------|-----------|------------------------------|--------------------------------------|--------------------
 POST   | /api/comments/photos         | YES   | user      | Post a comment on a photo    | `comment_text`, `user_id`, `photo_id` | { comment }
-GET    | /api/comments/photos/:id     | YES   | user/admin | Get photo comment by id       | -                                    | { comment }
-DELETE | /api/comments/photos/:id     | YES   | user      | Delete photo comment         | -                                    | { message: 'Comment deleted' }
+GET    | /api/comments/photos/:id     | YES   | user      | Get photo comment by id      | -                                     | { comment }
+DELETE | /api/comments/photos/:id     | YES   | user      | Delete photo comment         | -                                     | { message: 'Comment deleted' }
 POST   | /api/comments/videos         | YES   | user      | Post a comment on a video    | `comment_text`, `user_id`, `video_id` | { comment }
-GET    | /api/comments/videos/:id     | YES   | user/admin | Get video comment by id       | -                                    | { comment }
-DELETE | /api/comments/videos/:id     | YES   | user      | Delete video comment         | -                                    | { message: 'Comment deleted' }
+GET    | /api/comments/videos/:id     | YES   | user      | Get video comment by id      | -                                     | { comment }
+DELETE | /api/comments/videos/:id     | YES   | user      | Delete video comment         | -                                     | { message: 'Comment deleted' }
 
 ### Photos Endpoints
 
@@ -152,7 +154,7 @@ METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION               
 -------|------------------------|-------|-----------|----------------------------|--------------------------------------|--------------------
 POST   | /api/videos            | YES   | user      | Upload a video             | `video_url`, `user_id`               | { video }
 GET    | /api/videos/:id        | YES   | user      | Get video by id            | -                                    | { video }
-GET    | /api/videos            | YES   | user/admin | Get all videos              | -                                    | [{ videos }]
+GET    | /api/videos            | YES   | user      | Get all videos             | -                                    | [{ videos }]
 PUT    | /api/videos/:id        | YES   | user      | Update video details       | `video_url`                          | { message: 'Video updated' }
 DELETE | /api/videos/:id        | YES   | user      | Delete video               | -                                    | { message: 'Video deleted' }
 
@@ -160,7 +162,7 @@ DELETE | /api/videos/:id        | YES   | user      | Delete video              
 
 METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                          | RETURNS
 -------|------------------------|-------|----------|----------------------------|--------------------------------------|--------------------
-GET    | /api/likes             | YES   | user/admin | Get all likes               | -                                    | [{ likes }]
+GET    | /api/likes             | YES   | user     | Get all likes              | -                                    | [{ likes }]
 POST   | /api/likes             | YES   | user     | Like a photo/video         | `user_id`, `photo_id`, `video_id`    | { like }
 DELETE | /api/likes/:id         | YES   | user     | Remove a like              | -                                    | { message: 'Like removed' }
 
@@ -168,8 +170,8 @@ DELETE | /api/likes/:id         | YES   | user     | Remove a like              
 
 METHOD | ENDPOINT               | TOKEN | ROLE     | DESCRIPTION                | POST PARAMS                          | RETURNS
 -------|------------------------|-------|----------|----------------------------|--------------------------------------|--------------------
-GET    | /api/messages          | YES   | user/admin | Get all messages            | -                                    | [{ messages }]
-GET    | /api/messages/:id      | YES   | user/admin | Get message by id           | -                                    | { message }
+GET    | /api/messages          | YES   | user     | Get all messages           | -                                    | [{ messages }]
+GET    | /api/messages/:id      | YES   | user     | Get message by id          | -                                    | { message }
 POST   | /api/messages          | YES   | user     | Send a new message         | `sender_id`, `receiver_id`, `message` | { message }
 PUT    | /api/messages/:id      | YES   | user     | Update a message           | `message`                            | { message: 'Message updated' }
 DELETE | /api/messages/:id      | YES   | user     | Delete a message           | -                                    | { message: 'Message deleted' }
@@ -178,7 +180,7 @@ DELETE | /api/messages/:id      | YES   | user     | Delete a message           
 
 METHOD | ENDPOINT                 | TOKEN | ROLE      | DESCRIPTION                  | POST PARAMS                                                        | RETURNS
 -------|--------------------------|-------|-----------|------------------------------|--------------------------------------------------------------------|--------------------
-POST   | /api/notifications       | YES   | user/admin | Create a notification        | `user_id`, `content`, `video_id`, `photo_id`, `comment_id`, `like_id`, `blog_id` | { notification }
+POST   | /api/notifications       | YES   | user      | Create a notification        | `user_id`, `content`, `video_id`, `photo_id`, `comment_id`, `like_id`, `blog_id` | { notification }
 GET    | /api/notifications/:id   | YES   | user      | Get notification by id       | -                                                                  | { notification }
 DELETE | /api/notifications/:id   | YES   | user      | Delete a notification        | -                                                                  | { message: 'Notification deleted' }
 
@@ -187,7 +189,7 @@ DELETE | /api/notifications/:id   | YES   | user      | Delete a notification   
 METHOD | ENDPOINT               | TOKEN | ROLE      | DESCRIPTION                | POST PARAMS                          | RETURNS
 -------|------------------------|-------|-----------|----------------------------|--------------------------------------|--------------------
 POST   | /api/blogs             | YES   | user      | Create a blog              | `user_id`, `blog`                    | { blog }
-GET    | /api/blogs/:id         | YES   | user/admin | Get blog by id              | -                                    | { blog }
-GET    | /api/blogs             | YES   | user/admin | Get all blogs               | -                                    | [{ blogs }]
+GET    | /api/blogs/:id         | YES   | user      | Get blog by id             | -                                    | { blog }
+GET    | /api/blogs             | YES   | user      | Get all blogs              | -                                    | [{ blogs }]
 PUT    | /api/blogs/:id         | YES   | user      | Update blog details        | `blog`                               | { message: 'Blog updated' }
 DELETE | /api/blogs/:id         | YES   | user      | Delete blog                | -                                    | { message: 'Blog deleted' }
