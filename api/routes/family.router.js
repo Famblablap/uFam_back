@@ -4,9 +4,9 @@ const { checkAuth, checkAdmin, checkMaster} = require("../middleware")
 const router = require("express").Router()
 
 router.get("/", getAllFamilies)
-router.get("/families/:id", checkAuth, checkAdmin, getFamilyById)
-router.post("/families/:id", checkAuth, createFamily)
-router.put("/families/:id", checkAuth, updateFamily)
-router.delete("/families/:id", checkAuth, checkAdmin, deleteFamily)
+router.get("/admin/:id", checkAuth, checkAdmin, getFamilyById)
+router.post("/:id", checkAuth, createFamily)
+router.put("/:id", checkAuth, updateFamily)
+router.delete("/admin/:id", checkAuth, checkAdmin, deleteFamily)
 
 module.exports = router

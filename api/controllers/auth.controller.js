@@ -8,6 +8,7 @@ async function signup(req, res) {
     req.body.password = hashedPassword
     try {
         const user = await User.create(req.body)
+        //add family
         const payload = { email: user.email }
         const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
         return res.status(200).json({ token: token })
