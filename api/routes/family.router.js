@@ -1,5 +1,5 @@
 const { createFamily, getFamilyById, getAllFamilies, updateFamily, deleteFamily} = require("../controllers/family.controller")
-const { checkAuth, checkAdmin} = require("../middleware")
+const { checkAuth, checkAdmin, checkMaster} = require("../middleware")
 
 const router = require("express").Router()
 
