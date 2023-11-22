@@ -61,7 +61,6 @@ async function getFamProfile(req, res) {
   }
 }
 
-
 async function createUser(req, res) {
   try {
     const user = await User.create(req.body);
