@@ -25,7 +25,7 @@ async function getFamilyById(req, res) {
 
 async function getAllFamProfiles(req, res) {
     try {
-      const user = await User.findByPk(req.params.userId, {
+      const user = await User.findByPk(res.locals.user.id, {
         include: Family,
       });
       if (!user) {
@@ -40,7 +40,6 @@ async function getAllFamProfiles(req, res) {
         },
         include: Family,
       });
-  
       if (!familyMembers || familyMembers.length === 0) {
         return res.status(404).send("Family members not found");
       }
