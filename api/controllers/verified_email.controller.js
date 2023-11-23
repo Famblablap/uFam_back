@@ -1,6 +1,8 @@
 const User = require('../models/user.model')
 const VerifiedEmail = require('../models/verified_email.model')
-const nodemailer = require("nodemailer")
+const { mailer } = require('../../mailer/index')
+const { sendMailCreateAccount } = require('../../mailer/senders')
+
 
 async function getAllVerifiedEmails(req, res) {
     try {
@@ -61,24 +63,19 @@ async function sendInvitation(req, res) {
         
         const addEmail = await VerifiedEmail.create(req.body)
         //generar contraseña aleatoria
+        req.body.password = "12345"
+        const user = await User.create(req.body)
         //crear usuario con el correo añadido y la contraseña aleatoria
-        const transporter = nodemailer.createTransport({
-            // Transport configuration (service, auth, etc.)
-        });
-
-      /*   const mailOptions = {
-            from: "email@email.com",
-            to: email,
-            subject: 'Family Invitation',
-            html: '<p>You have been invited to join a family. Please click the following link to verify your email address:</p>' +
-                  '<a href="http://yourfrontenddomain.com/verify?token=' + verifiedEmailEntry.verificationToken + '">Verify Email</a>'
-        };
-
-        await transporter.sendMail(mailOptions); */
+        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email))
+        console.log(resMail)
         res.status(200).send({ message: 'Invitation sent successfully.' });
     } catch (error) {
         res.status(500).send('Error: ' + error.message);
     }
+}
+
+function randomPassword(pass){
+    const password = pas
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+const { sendMailCreateAccount } = require('../../mailer/senders');
 const Family = require('../models/family.model')
 const User = require("../models/user.model");
 
@@ -92,13 +93,24 @@ async function deleteFamily(req, res) {
 
 //if role master->delete family
 
+async function authEmailFam(req, res){
+    try {
+        
+        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email))
+        console.log(resMail)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 module.exports = {
     createFamily,
     getFamilyById,
     getAllFamilies,
     getAllFamProfiles,
     updateFamily,
-    deleteFamily
+    deleteFamily, 
+    authEmailFam
 }
 
 

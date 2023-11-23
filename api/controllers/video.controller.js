@@ -22,7 +22,7 @@ async function getOneVideo(req, res) {
 }
 
 /*solo checkAuth porque todos pueden acceder a un video de un usuario especifico 
-por el id mientras pertenezca a la familia*/
+por el id mientras pertenezca a la familia..*/
 async function getFamVideo(req, res) {
     try {
       const famVideo = await Video.findByPk(req.params.videoId);
