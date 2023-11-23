@@ -6,7 +6,7 @@ const User = sequelize.define(
   {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -15,7 +15,7 @@ const User = sequelize.define(
     },
     dob: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -24,11 +24,11 @@ const User = sequelize.define(
     role: {
       type: DataTypes.STRING,
       defaultValue: "user",
-      allowNull: false,
+      allowNull: true,
     },
     profile_picture: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
 

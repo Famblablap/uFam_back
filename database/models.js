@@ -8,6 +8,7 @@ const Video = require("../api/models/video.model");
 const Like = require("../api/models/like.model");
 const Comment_Photos = require("../api/models/comment_photos.model");
 const Comment_Videos = require("../api/models/comment_videos.model");
+const VerifiedEmail = require("../api/models/verified_email.model");
 
 function setRelations() {
   try {
@@ -30,21 +31,30 @@ function setRelations() {
     User.hasMany(Message);
     Message.belongsTo(User);
 
+    User.hasMany(Comment_Photos)
+    Comment_Photos.belongsTo(User)
+
+    User.hasMany(Comment_Videos)
+    Comment_Videos.belongsTo(User)    
+
     Family.hasMany(User);
     User.belongsTo(Family);
 
+    Family.hasMany(VerifiedEmail);
+    VerifiedEmail.belongsTo(Family)
+
     Photo.hasMany(Like);
     Like.belongsTo(Photo);
+    
+    Photo.hasMany(Comment_Photos)
+    Comment_Photos.belongsTo(Photo)
 
     Video.hasMany(Like);
     Like.belongsTo(Video);
 
-    //Many to many
-    User.belongsToMany(Photo, { through: Comment_Photos });
-    Photo.belongsToMany(User, { through: Comment_Photos });
+    Video.hasMany(Comment_Videos)
+    Comment_Videos.belongsTo(Video)
 
-    User.belongsToMany(Video, { through: Comment_Videos });
-    Video.belongsToMany(User, { through: Comment_Videos });
   } catch (error) {
     console.log(error);
   }
