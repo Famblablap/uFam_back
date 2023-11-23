@@ -56,15 +56,15 @@ async function getFamProfile(req, res) {
   }
 }
 
-
-async function createUser(req, res) {
+//Crear usuario se hará desde la invitación por email, por lo que no es necesaria la función createUser.
+/* async function createUser(req, res) {
   try {
     const user = await User.create(req.body);
     return res.status(200).send(user);
   } catch (error) {
     return res.status(500).send(error.message);
   }
-} 
+}  */
 
 async function updateUser(req, res) {
   try {
@@ -95,7 +95,6 @@ module.exports = {
   getOneUser,
   getProfile,
   getFamProfile,
-  createUser,
   updateUser,
   deleteUser,
 };

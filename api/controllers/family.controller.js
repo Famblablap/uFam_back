@@ -50,15 +50,15 @@ async function getAllFamProfiles(req, res) {
       return res.status(500).send(error.message);
     }
 }
-
-async function createFamily(req, res) {
+//Solo se crea familia cuando se hace el SignUp, por lo que no necesitamos createFamily
+/* async function createFamily(req, res) {
     try {
         const family = await Family.create({ family_name: req.body.family_name })
         return res.status(200).json(family)
     } catch (error) {
         return res.status(500).send(error.message)
     }
-}
+} */
 
 async function updateFamily(req, res) {
     try {
@@ -104,7 +104,6 @@ async function authEmailFam(req, res){
 }
 
 module.exports = {
-    createFamily,
     getFamilyById,
     getAllFamilies,
     getAllFamProfiles,
