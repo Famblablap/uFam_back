@@ -1,7 +1,8 @@
 {
-  "engines": {
-    "node": ">=18.18.0"
-  },
+  "name": "ufam_back",
+  "version": "1.0.0",
+  "description": "Theshia, Carolina and Julio.",
+  "main": "index.js",
   "dependencies": {
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
@@ -11,6 +12,15 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.6.4",
+    "nodemailer": "^6.9.7",
     "sequelize": "^6.35.1"
-  }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

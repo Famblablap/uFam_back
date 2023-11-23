@@ -1,12 +1,19 @@
-const { getAllBlogs, getOneBlog, createBlog, deleteBlog } = require('../controllers/blog.controller')
-const { checkAuth, checkAdmin } = require('../middleware/index')
+const {
+  getAllBlogs,
+  getOneBlog,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+} = require("../controllers/blog.controller");
+//aqui falta poner lo de checkAuth y checkAdmin y blablabla Famblablap
 
-const router = require('express').Router()
+const router = require("express").Router();
 
 //CRUD básico de Blog
-router.get('/', checkAuth, checkAdmin, getAllBlogs)
-router.get('/:id', checkAuth, getOneBlog)
-router.post('/', checkAuth, createBlog)
-router.delete('/:id', checkAuth, deleteBlog)
+router.get("/admin", getAllBlogs);
+router.get("/admin/:id", getOneBlog);
+router.post("/", createBlog);
+router.put("/:id", updateBlog);
+router.delete("/:id", deleteBlog);
 
-module.exports = router
+module.exports = router;

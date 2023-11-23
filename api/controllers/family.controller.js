@@ -1,4 +1,5 @@
 const Family = require('../models/family.model')
+const User = require("../models/user.model");
 
 async function getAllFamilies(req, res) {
     try {
@@ -22,9 +23,36 @@ async function getFamilyById(req, res) {
     }
 }
 
+async function getAllFamProfiles(req, res) {
+    try {
+      const user = await User.findByPk(res.locals.user.id, {
+        include: Family,
+      });
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      if (!user.family) {
+        return res.status(404).send("User not found in the family");
+      }
+      const familyMembers = await User.findAll({
+        where: {
+          familyId: user.family.id,
+        },
+        include: Family,
+      });
+      if (!familyMembers || familyMembers.length === 0) {
+        return res.status(404).send("Family members not found");
+      }
+  
+      return res.status(200).json(familyMembers);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+}
+
 async function createFamily(req, res) {
     try {
-        const family = await Family.create({ user_id: req.body.user_id })
+        const family = await Family.create({ family_name: req.body.family_name })
         return res.status(200).json(family)
     } catch (error) {
         return res.status(500).send(error.message)
@@ -33,7 +61,7 @@ async function createFamily(req, res) {
 
 async function updateFamily(req, res) {
     try {
-        const [updated] = await Family.update(req.body, {
+        const [updated] = await Family.update(req.body.family_name, {
             where: { family_id: req.params.id }
         })
         if (updated) {
@@ -65,9 +93,13 @@ async function deleteFamily(req, res) {
 //if role master->delete family
 
 module.exports = {
-    getAllFamilies,
-    getFamilyById,
     createFamily,
+    getFamilyById,
+    getAllFamilies,
+    getAllFamProfiles,
     updateFamily,
     deleteFamily
 }
+
+
+  

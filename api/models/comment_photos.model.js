@@ -1,14 +1,17 @@
-const { DataTypes } = require('sequelize')
-const { sequelize } = require("../../database/index")
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../../database/index");
 
 const Comment_Photos = sequelize.define(
-     'comment_photos', {
-        comment_text: { 
-            type: DataTypes.STRING, allowNull: false,
-         },
+  "comment_photos",
+  {
+    comment_text: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-{
-     timestamps: false
-})
+  },
+  {
+    timestamps: false,
+  }
+);
 
-module.exports = Comment_Photos
+module.exports = Comment_Photos;
