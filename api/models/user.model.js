@@ -21,10 +21,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    repeat_password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     role: {
       type: DataTypes.STRING,
       defaultValue: "user",
