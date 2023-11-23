@@ -1,14 +1,15 @@
 const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const Family = require('../models/family.model')
 
 async function signup(req, res) {
     const saltRounds = bcrypt.genSaltSync(parseInt(process.env.SALTROUNDS))
     const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds)
     req.body.password = hashedPassword
     try {
-        const user = await User.create(req.body)
-        //add family
+        const family = await Family.create({ family_name: req.body.family_name })
+        const user = await User.create({...req.body, familyId: family.id})
         const payload = { email: user.email }
         const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
         return res.status(200).json({ token: token })
