@@ -4,8 +4,23 @@ const User = require('../models/user.model')
 const Photo = require('../models/photo.model')
 const Video = require('../models/video.model')
 
+async function getCommentsPhoto(req, res) {
+    try {
+        const commentPhoto = await Comment_Photos.findAll(/* {
+            where: {
+                photoId: req.params.id
+            }
+        } */)
+        if (!commentPhoto) { res.status(404).send('Comment photo not found') }
+        return res.status(200).json(commentPhoto)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 async function createCommentPhoto(req, res) {
     try {
+        console.log("hola")
         const comment = await Comment_Photos.create(req.body)
         const user = await User.findByPk(res.locals.user.id)
         if (!user) { res.status(404).send('User not found') }
@@ -13,20 +28,6 @@ async function createCommentPhoto(req, res) {
         await comment.setPhoto(photo)
         await comment.setUser(user)
         return res.status(200).json(comment)
-    } catch (error) {
-        return res.status(500).send(error.message)
-    }
-}
-
-async function getCommentsPhoto(req, res) {
-    try {
-        const commentPhoto = await Comment_Photos.findAll({
-            where: {
-                photoId: req.params.id
-            }
-        })
-        if (!commentPhoto) { res.status(404).send('Comment photo not found') }
-        return res.status(200).json(commentPhoto)
     } catch (error) {
         return res.status(500).send(error.message)
     }
