@@ -45,10 +45,21 @@ async function deleteVerifiedEmail(req, res) {
     }
 }
 
+function generatePassword() {
+    var length = 10,
+        char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        randomPassword = "";
+    for (var i = 0, n = char.length; i < length; ++i) {
+        randomPassword += char.charAt(Math.floor(Math.random() * n));
+    }
+    return randomPassword;
+}
+
+
 async function sendInvitation(req, res) {
+    console.log("hola invitacion")
     const email = req.body.email;
     const user = await User.findByPk(res.locals.user.id)
-    console.log(user)
     req.body.familyId = user.familyId
     try {
         const existingInvitation = await VerifiedEmail.findOne({ 
@@ -62,20 +73,14 @@ async function sendInvitation(req, res) {
         }
         
         const addEmail = await VerifiedEmail.create(req.body)
-        //generar contraseña aleatoria
-        req.body.password = "12345"
+        req.body.password = generatePassword()
         const user = await User.create(req.body)
-        //crear usuario con el correo añadido y la contraseña aleatoria
-        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email))
+        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email, req.body.password))
         console.log(resMail)
         res.status(200).send({ message: 'Invitation sent successfully.' });
     } catch (error) {
         res.status(500).send('Error: ' + error.message);
     }
-}
-
-function randomPassword(pass){
-    const password = pas
 }
 
 module.exports = {

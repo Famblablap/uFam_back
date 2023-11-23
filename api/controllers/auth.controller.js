@@ -9,6 +9,7 @@ async function signup(req, res) {
     req.body.password = hashedPassword
     try {
         const family = await Family.create({ family_name: req.body.family_name })
+        req.body.role = "master"
         const user = await User.create({...req.body, familyId: family.id})
         const payload = { email: user.email }
         const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
