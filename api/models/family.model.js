@@ -6,7 +6,7 @@ const Family = sequelize.define(
   {
     family_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
