@@ -30,22 +30,22 @@ async function getOnePhoto(req, res) {
 por el id mientras pertenezca a la familia*/
 async function getFamPhoto(req, res) {
   try {
-    const famPhoto = await Photo.findByPk(req.params.photoId);
-    console.log(famPhoto)
+    const photo = await Photo.findByPk(req.params.id);
+    const ownerPhoto = await User.findByPk(photo.userId)
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
     const familyPhoto = await Photo.findOne({
       where: {
-        // id: famPhoto.id,
-        familyId: user.family.id,
+        id: photo.id,
+        userId: user.id
       },
     });
-    if (!familyPhoto) {
-      return res.status(404).send("Photo not found");
+    if (user.familyId !== ownerPhoto.familyId){
+      return res.status(500).send("User not authorized")
+    } if (user.familyId === ownerPhoto.familyId) {
+      return res.status(200).json(photo)
     }
-
-    return res.status(200).json(familyPhoto);
   } catch (error) {
     return res.status(500).send(error.message);
   }
