@@ -1,3 +1,4 @@
+const { application } = require('express');
 const Notification = require('../models/notification.model')
 
 async function getNotificationById(req, res) {
@@ -13,25 +14,38 @@ async function getNotificationById(req, res) {
     }
 }
 
-async function createNotification(req, res) {
+async function createNotification(arg) {
     try {
-        console.log(req.body)
-        console.log(req.user)
-        const notification = await Notification.create({
-            content: req.body.content,
-            video_id: req.body.video_id,
-            photo_id: req.body.photo_id,
-            comment_id: req.body.comment_id,
-            like_id: req.body.like_id,
-            blog_id: req.body.blog_id,
-            user_id: req.user.id
-        })
-        return res.status(200).json(notification)
+        const { action, userId, contentId, contentType, like_id } = arg;
+
+        const notificationData = {
+            content: `${action} on ${contentType}`,
+            user_id: userId,
+            photo_id: null,
+            video_id: null,
+            comment_id: null,
+            like_id: like_id,
+            blog_id: null,
+        };
+
+        if (contentType === 'photo') {
+            notificationData.photo_id = contentId;
+        } else if (contentType === 'video') {
+            notificationData.video_id = contentId;
+        } else if (contentType === 'comment') {
+            notificationData.comment_id = contentId;
+        }
+
+        const notification = await Notification.create(notificationData);
+
+        return notification
     } catch (error) {
-        console.error(error)
-        return res.status(500).send(error.message)
+        console.error("Error creating notification:", error.message);
+        return res.status(500).send(error.message);
     }
 }
+
+
 
 async function deleteNotification(req, res) {
     try {

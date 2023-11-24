@@ -1,4 +1,5 @@
 const Like = require ('../models/like.model')
+const { createNotification } = require("./notification.controller")
 
 async function getAllLikes (req, res){
     try {
@@ -10,13 +11,31 @@ async function getAllLikes (req, res){
 }
 
 async function createLike(req, res) {
+    
     try {
-        const like = await Like.create(req.body)
-        return res.status(200).send(like)
+        const likeData = { userId: res.locals.user.id };
+
+        if (req.body.photoId) {
+            likeData.photoId = req.body.photoId;
+            req.body = { ...req.body, action: 'Liked', contentId: req.body.photoId, contentType: 'photo' };
+        } else if (req.body.videoId) {
+            likeData.videoId = req.body.videoId;
+            req.body = { ...req.body, action: 'Liked', contentId: req.body.videoId, contentType: 'video' };
+        } else if (req.body.commentId) {
+            likeData.commentId = req.body.commentId;
+            req.body = { ...req.body, action: 'Liked', contentId: req.body.commentId, contentType: 'comment' };
+        }
+        
+        const like = await Like.create(likeData);
+        req.body.like_id = like.id
+        const notification = await createNotification(req.body);
+
+        return res.status(200).send(notification);
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 }
+
 
 async function deleteLike(req, res) {
     try {
