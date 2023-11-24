@@ -2,7 +2,6 @@ const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Family = require('../models/family.model')
-const Verfified_Email = require('../models/verified_email.model')
 const { generatePassword } = require('./verified_email.controller')
 
 async function signup(req, res) {
@@ -31,7 +30,6 @@ async function login(req, res) {
 
         if (!user) return res.status(404).send('Error: Email or password incorrect')
         const comparePass = bcrypt.compareSync(req.body.password, user.password)
-
         if (comparePass) {
             const payload = { email: user.email }
             const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })

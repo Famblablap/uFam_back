@@ -12,7 +12,7 @@ async function getAllUsers(req, res) {
 
 async function getOneUser(req, res) {
   try {
-    const user = await User.findOne();
+    const user = await User.findByPk(req.params.id);
     if (!user) {
       res.status(500).send("User not found");
     }
@@ -36,7 +36,7 @@ async function getProfile(req, res) {
 
 async function getFamProfile(req, res) {
   try {
-    const famProfile = await User.findByPk(req.params.userId);
+    const famProfile = await User.findByPk(req.params.id);
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
@@ -71,9 +71,12 @@ async function updateUser(req, res) {
     const user = await User.update(req.body, {
       where: {
         id: req.params.id,
-      },
-    });
-    return res.status(200).json(user);
+      }
+    })
+    if (user == 0) {
+      return res.status(404).send("User not found");
+    }
+    return res.status(200).send("User has been updated");
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -85,9 +88,14 @@ async function deleteUser(req, res) {
       where: {
         id: req.params.id,
       },
-    });
+    })
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
     res.status(500).json({ text: "User removed", user: user });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
 }
 
 module.exports = {

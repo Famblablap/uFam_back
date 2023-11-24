@@ -5,8 +5,8 @@ const router = require("express").Router();
 
 router.get("/admin", checkAuth, checkAdmin, getAllUsers);
 router.get("/admin/:id", checkAuth, checkAdmin, getOneUser);
-router.get("/profile/:userId", checkAuth, getFamProfile);
 router.get("/profile", checkAuth, getProfile);
+router.get("/profile/:id", checkAuth, getFamProfile);
 // router.post("/", checkAuth, checkMaster, createUser);
 router.put("/:id", checkAuth, checkMaster, updateUser);
 router.delete("/:id", checkAuth, checkMaster, deleteUser);

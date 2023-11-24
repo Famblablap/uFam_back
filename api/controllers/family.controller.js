@@ -62,20 +62,19 @@ async function getAllFamProfiles(req, res) {
 
 async function updateFamily(req, res) {
     try {
-        const [updated] = await Family.update(req.body.family_name, {
-            where: { family_id: req.params.id }
+        const family = await Family.update(req.body, {
+            where: { 
+                id: req.params.id 
+            }
         })
-        if (updated) {
-            return res.status(200).send({ message: 'Family updated' })
+        if (family == 0) {
+            return res.status(404).send("Family not found")
         }
-        return res.status(404).send('Family not found')
+        return res.status(200).send("Family has been updated")
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
-
-//res.local.id 
-//master can delete, update
 
 async function deleteFamily(req, res) {
     try {
