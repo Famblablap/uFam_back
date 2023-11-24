@@ -61,11 +61,13 @@ async function sendInvitation(req, res) {
     const email = req.body.email;
     const user = await User.findByPk(res.locals.user.id)
     req.body.familyId = user.familyId
+    const family = req.body.familyId
     try {
         const existingInvitation = await VerifiedEmail.findOne({ 
             where: 
             { 
-                email: email 
+                email: email, 
+                familyId: family
             } 
         });
         if (existingInvitation) {
