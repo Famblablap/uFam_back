@@ -78,14 +78,10 @@ async function sendInvitation(req, res) {
         }
         
         const addEmail = await VerifiedEmail.create(req.body)
-        const password = generatePassword()
-        const saltRounds = bcrypt.genSaltSync(parseInt(process.env.SALTROUNDS))
-        const hashedPassword = bcrypt.hashSync(password, saltRounds)
-        req.body.password = hashedPassword
-      //  console.log(hashedPassword)
+        req.body.password = generatePassword()
         const user = await User.create(req.body)
-        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email, password))
-      //  console.log(resMail)
+        const resMail = await mailer.sendMail(sendMailCreateAccount(user.email, req.body.password))
+        console.log(resMail)
         res.status(200).send({ message: 'Invitation sent successfully.' });
     } catch (error) {
         res.status(500).send('Error: ' + error.message);
