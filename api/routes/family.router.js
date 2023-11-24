@@ -8,7 +8,6 @@ router.get("/admin", checkAuth, checkAdmin, getAllFamilies)
 router.get("/admin/:id", checkAuth, checkAdmin, getFamilyById)
 router.get("/", checkAuth, getAllFamProfiles)
 router.post("/sendInvitation", checkAuth, checkMaster, sendInvitation)
-router.put("/:id", checkAuth, updateFamily)
 router.delete("/:id", checkAuth, checkAdmin, deleteFamily)
 
 module.exports = router
