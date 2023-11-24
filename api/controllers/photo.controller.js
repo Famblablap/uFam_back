@@ -35,12 +35,6 @@ async function getFamPhoto(req, res) {
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
-    const familyPhoto = await Photo.findOne({
-      where: {
-        id: photo.id,
-        userId: user.id
-      },
-    });
     if (user.familyId !== ownerPhoto.familyId){
       return res.status(500).send("User not authorized")
     } if (user.familyId === ownerPhoto.familyId) {
@@ -58,24 +52,31 @@ async function getAllFamPhotos(req, res) {
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    if (!user.family) {
-      return res.status(404).send("User not found in the family");
-    }
+    // console.log(user.familyId)
+    const photos = await Photo.findAll({
+      include: [
+        {
+        model: User,
+        where: {
+          familyId: user.familyId
+        }
+      }
+    ],
+    })
 
-    const familyPhotos = await Photo.findAll({
+    const ownersPhotos = await Photo.findOne({
       where: {
-        familyId: user.family.id,
+        userId: user.id
       },
-      include: Family,
-    });
-    if (!familyPhotos || familyPhotos.length === 0) {
+      include: [User]
+    })
+    if (user.familyId !== ownersPhotos.user.familyId){
+      return res.status(404).send("User not authorized");
+    } if (!photos || photos.length === 0) {
       return res.status(404).send("Photos not found");
+    } if (user.familyId === ownersPhotos.user.familyId) {
+      return res.status(200).json(photos)
     }
-
-    return res.status(200).json(familyPhotos);
   } catch (error) {
     return res.status(500).send(error.message);
   }
