@@ -21,17 +21,14 @@ async function createNotification(arg) {
         const notificationData = {
             content: `${action} on ${contentType}`,
             user_id: userId,
-            photo_id: null,
-            video_id: null,
+            content_id: null,
             comment_id: null,
             like_id: like_id,
             blog_id: null,
         };
 
-        if (contentType === 'photo') {
-            notificationData.photo_id = contentId;
-        } else if (contentType === 'video') {
-            notificationData.video_id = contentId;
+        if (contentType === 'content') {
+            notificationData.content_id = contentId;
         } else if (contentType === 'comment') {
             notificationData.comment_id = contentId;
         }

@@ -6,11 +6,7 @@ const Like = sequelize.define("like", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    photoId: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
-    videoId: {
+    contentId: {
         type: DataTypes.INTEGER,
         allowNull: true
     },

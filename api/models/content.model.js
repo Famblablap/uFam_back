@@ -1,10 +1,10 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../database/index");
 
-const Videos = sequelize.define(
-  "videos",
+const Contents = sequelize.define(
+  "content",
   {
-    video_url: {
+    content_url: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -14,4 +14,4 @@ const Videos = sequelize.define(
   }
 );
 
-module.exports = Videos;
+module.exports = Contents;
