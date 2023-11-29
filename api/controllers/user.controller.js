@@ -69,12 +69,18 @@ async function getFamProfile(req, res) {
 }  */
 
 async function updateUser(req, res) {
+  const newDate = dayjs(req.body.dob).format("YYYY-MM-DD");
   try {
-    const user = await User.update(req.body, {
-      where: {
-        id: res.locals.user.id,
-      }
-    })
+    const user = await User.update(
+      {
+        ...req.body,
+        dob: newDate,
+      },
+      {
+        where: {
+          id: res.locals.user.id,
+        },
+      });
     if (user == 0) {
       return res.status(404).send("User not found");
     }
