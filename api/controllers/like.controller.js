@@ -15,12 +15,9 @@ async function createLike(req, res) {
     try {
         const likeData = { userId: res.locals.user.id };
 
-        if (req.body.photoId) {
-            likeData.photoId = req.body.photoId;
-            req.body = { ...req.body, action: 'Liked', contentId: req.body.photoId, contentType: 'photo' };
-        } else if (req.body.videoId) {
-            likeData.videoId = req.body.videoId;
-            req.body = { ...req.body, action: 'Liked', contentId: req.body.videoId, contentType: 'video' };
+        if (req.body.contentId) {
+            likeData.contentId = req.body.contentId;
+            req.body = { ...req.body, action: 'Liked', contentId: req.body.contentId, contentType: 'content' };
         } else if (req.body.commentId) {
             likeData.commentId = req.body.commentId;
             req.body = { ...req.body, action: 'Liked', contentId: req.body.commentId, contentType: 'comment' };

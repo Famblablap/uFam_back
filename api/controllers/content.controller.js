@@ -1,25 +1,25 @@
-const Photo = require('../models/photo.model')
+const Content = require('../models/content.model')
 const Family = require('../models/family.model')
 const User = require('../models/user.model')
 
 //checkAdmin porque el Admin puede traer todas las fotos de todos los usuarios
-async function getAllPhotos(req, res) {
+async function getAllContent(req, res) {
   try {
-    const photos = await Photo.findAll()
-    return res.status(200).json(photos)
+    const contents = await Content.findAll()
+    return res.status(200).json(contents)
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
 //cheackAdmin porque el Admin puede traer todas las fotos de todos los id de la web
-async function getOnePhoto(req, res) {
+async function getOneContent(req, res) {
   try {
-    const photo = await Photo.findByPk(req.params.id)
-    if (photo) {
-      return res.status(200).json(photo)
+    const content = await Contents.findByPk(req.params.id)
+    if (content) {
+      return res.status(200).json(content)
     } else {
-      return res.status(404).json("Phoho not found")
+      return res.status(404).json("Content not found")
     }
   } catch (error) {
     res.status(500).send(error.message)
@@ -28,17 +28,17 @@ async function getOnePhoto(req, res) {
 
 /*solo checkAuth porque todos pueden acceder a una foto de un usuario especifico 
 por el id mientras pertenezca a la familia*/
-async function getFamPhoto(req, res) {
+async function getFamContent(req, res) {
   try {
-    const photo = await Photo.findByPk(req.params.id);
-    const ownerPhoto = await User.findByPk(photo.userId)
+    const content = await Content.findByPk(req.params.id);
+    const ownerContent = await User.findByPk(content.userId)
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
-    if (user.familyId !== ownerPhoto.familyId){
+    if (user.familyId !== ownerContent.familyId){
       return res.status(500).send("User not authorized")
-    } if (user.familyId === ownerPhoto.familyId) {
-      return res.status(200).json(photo)
+    } if (user.familyId === ownerContent.familyId) {
+      return res.status(200).json(content)
     }
   } catch (error) {
     return res.status(500).send(error.message);
@@ -47,13 +47,13 @@ async function getFamPhoto(req, res) {
 
 /*solo checkAuth porque todos pueden acceder a todas las fotos de los usuarios 
 que pertenezan a la familia*/
-async function getAllFamPhotos(req, res) {
+async function getAllFamContent(req, res) {
   try {
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
     // console.log(user.familyId)
-    const photos = await Photo.findAll({
+    const contents = await Content.findAll({
       include: [
         {
         model: User,
@@ -64,59 +64,59 @@ async function getAllFamPhotos(req, res) {
     ],
     })
 
-    const ownersPhotos = await Photo.findOne({
+    const ownersContents = await Content.findOne({
       where: {
         userId: user.id
       },
       include: [User]
     })
-    if (user.familyId !== ownersPhotos.user.familyId){
+    if (user.familyId !== ownersContents.user.familyId){
       return res.status(404).send("User not authorized");
-    } if (!photos || photos.length === 0) {
-      return res.status(404).send("Photos not found");
-    } if (user.familyId === ownersPhotos.user.familyId) {
-      return res.status(200).json(photos)
+    } if (!contents || contents.length === 0) {
+      return res.status(404).send("Content not found");
+    } if (user.familyId === ownersContents.user.familyId) {
+      return res.status(200).json(content)
     }
   } catch (error) {
     return res.status(500).send(error.message);
   }
 }
 
-async function createPhoto(req, res) {
+async function createContent(req, res) {
   try {
     const user = await User.findByPk(res.locals.user.id)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
-    const photoData = {
+    const contentData = {
       ...req.body,
       userId: user.id,
     };
-    const photo = await Photo.create(photoData)
-    return res.status(201).json(photo);
+    const content = await Content.create(contentData)
+    return res.status(201).json(content);
   } catch (error) {
     return res.status(500).send(error.message);
   }
 }
 
-async function deletePhoto(req, res) {
+async function deleteContent(req, res) {
   try {
-    const photo = await Photo.destroy({
+    const content = await Content.destroy({
       where: {
         id: req.params.id
       }
     })
-    res.status(500).json({ text: 'Photo removed', photo: photo })
+    res.status(500).json({ text: 'Content removed', content: content })
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
 module.exports = {
-  getAllPhotos,
-  getOnePhoto,
-  getFamPhoto,
-  getAllFamPhotos,
-  createPhoto,
-  deletePhoto
+  getAllContent,
+  getOneContent,
+  getFamContent,
+  getAllFamContent,
+  createContent,
+  deleteContent
 }

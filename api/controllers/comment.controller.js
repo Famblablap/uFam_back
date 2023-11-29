@@ -1,31 +1,29 @@
-const Comment_Photos = require('../models/comment_photos.model')
-const Comment_Videos = require('../models/comment_videos.model')
+const Comment_Contents = require("../models/comment_contents.model")
 const User = require('../models/user.model')
-const Photo = require('../models/photo.model')
-const Video = require('../models/video.model')
+const Content = require("../models/content.model")
 
-async function getCommentsPhoto(req, res) {
+async function getCommentsContent(req, res) {
     try {
-        const commentPhoto = await Comment_Photos.findAll(/* {
+        const commentContent = await Comment_Contents.findAll(/* {
             where: {
                 photoId: req.params.id
             }
         } */)
-        if (!commentPhoto) { res.status(404).send('Comment photo not found') }
-        return res.status(200).json(commentPhoto)
+        if (!commentContent) { res.status(404).send('Comment on content not found') }
+        return res.status(200).json(commentContent)
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
 
-async function createCommentPhoto(req, res) {
+async function createCommentContent(req, res) {
     try {
         console.log("hola")
-        const comment = await Comment_Photos.create(req.body)
+        const comment = await Comment_Contents.create(req.body)
         const user = await User.findByPk(res.locals.user.id)
         if (!user) { res.status(404).send('User not found') }
-        const photo = await Photo.findByPk(req.params.photoId)
-        await comment.setPhoto(photo)
+        const content = await Content.findByPk(req.params.contentId)
+        await comment.setContent(content)
         await comment.setUser(user)
         return res.status(200).json(comment)
     } catch (error) {
@@ -33,68 +31,21 @@ async function createCommentPhoto(req, res) {
     }
 }
 
-async function deleteCommentPhoto(req, res) {
+async function deleteCommentContent(req, res) {
     try {
-        const commentPhoto = await Comment_Photos.destroy({
+        const commentContent = await Comment_Contents.destroy({
             where: {
                 id: req.params.id
             }
         })
-        res.status(500).json({ text: 'Comment photo removed', commentPhoto: commentPhoto })
+        res.status(500).json({ text: 'Comment on content removed', commentContent: commentContent })
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
-
-async function createCommentVideo(req, res) {
-    try {
-        const comment = await Comment_Videos.create(req.body)
-        const user = await User.findByPk(res.locals.user.id)
-        if (!user) { 
-            res.status(404).send('User not found') 
-        }
-        const video = await Video.findByPk(req.params.videoId)
-        await comment.setVideo(video)
-        await comment.setUser(user)
-        return res.status(200).json(comment)
-    } catch (error) {
-        return res.status(500).send(error.message)
-    }
-}
-
-async function getCommentsVideo(req, res) {
-    try {
-        const commentVideo = await Comment_Videos.findAll({
-            where: {
-                videoId: req.params.id
-            }
-        })
-        if (!commentVideo) { res.status(404).send('Comment video not found') }
-        return res.status(200).json(commentVideo)
-    } catch (error) {
-        return res.status(500).send(error.message)
-    }
-}
-
-async function deleteCommentVideo(req, res) {
-    try {
-        const commentVideo = await Comment_Video.destroy({
-            where: {
-                id: req.params.id
-            }
-        })
-        res.status(500).json({ text: 'Comment video removed', commentVideo: commentVideo })
-    } catch (error) {
-        return res.status(500).send(error.message)
-    }
-}
-
 
 module.exports = {
-    createCommentPhoto,
-    getCommentsPhoto,
-    deleteCommentPhoto,
-    createCommentVideo,
-    getCommentsVideo,
-    deleteCommentVideo
+    getCommentsContent,
+    createCommentContent,
+    deleteCommentContent
 }

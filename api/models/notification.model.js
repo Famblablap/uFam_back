@@ -8,11 +8,7 @@ const Notification = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    video_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    photo_id: {
+    content_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
