@@ -50,7 +50,9 @@ async function createCommentVideo(req, res) {
     try {
         const comment = await Comment_Videos.create(req.body)
         const user = await User.findByPk(res.locals.user.id)
-        if (!user) { res.status(404).send('User not found') }
+        if (!user) { 
+            res.status(404).send('User not found') 
+        }
         const video = await Video.findByPk(req.params.videoId)
         await comment.setVideo(video)
         await comment.setUser(user)
