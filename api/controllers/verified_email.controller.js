@@ -57,10 +57,9 @@ function generatePassword() {
 }
 
 const password = generatePassword()
-console.log(password)
 
 async function sendInvitation(req, res) {
-    console.log("hola invitacion")
+    // console.log("hola invitacion")
     const email = req.body.email;
     const user = await User.findByPk(res.locals.user.id)
     req.body.familyId = user.familyId

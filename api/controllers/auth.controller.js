@@ -27,7 +27,7 @@ async function login(req, res) {
                 email: req.body.email
             }
         })
-
+        console.log(user)
         if (!user) return res.status(404).send('Error: Email or password incorrect')
         const comparePass = bcrypt.compareSync(req.body.password, user.password)
         if (comparePass) {
