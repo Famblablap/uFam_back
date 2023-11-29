@@ -52,6 +52,7 @@ async function getAllFamContent(req, res) {
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
+    console.log(user)
     // console.log(user.familyId)
     const contents = await Content.findAll({
       include: [
