@@ -18,7 +18,7 @@ const User = sequelize.define(
       unique: true,
     },
     dob: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
     },
     password: {

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Family = require('../models/family.model')
 const User = require("../models/user.model");
 
@@ -37,9 +38,13 @@ async function getAllFamProfiles(req, res) {
         const familyMembers = await User.findAll({
             where: {
                 familyId: user.family.id,
+                id: {
+                    [Op.ne]: user.id,
+                }
             },
             include: Family,
         });
+        
         if (!familyMembers || familyMembers.length === 0) {
             return res.status(404).send("Family members not found");
         }
