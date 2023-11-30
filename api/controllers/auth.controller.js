@@ -34,7 +34,7 @@ async function login(req, res) {
         if (comparePass) {
             const payload = { email: user.email }
             const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
-            return res.status(200).send({ token: token })
+            return res.status(200).send({ token: token, id: user.id })
         } else {
             return res.status(404).send('Error: Email or Password incorrect')
         }
