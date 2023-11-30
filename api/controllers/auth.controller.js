@@ -9,6 +9,7 @@ async function signup(req, res) {
     const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds)
     req.body.password = hashedPassword
     try {
+        console.log(req.body.family_name)
         const family = await Family.create({ family_name: req.body.family_name })
         req.body.role = "master"
         const user = await User.create({ ...req.body, familyId: family.id })
