@@ -1,28 +1,28 @@
-const Content = require('../models/content.model')
-const Family = require('../models/family.model')
-const User = require('../models/user.model')
+const Content = require("../models/content.model");
+const Family = require("../models/family.model");
+const User = require("../models/user.model");
 
 //checkAdmin porque el Admin puede traer todas las fotos de todos los usuarios
 async function getAllContent(req, res) {
   try {
-    const contents = await Content.findAll()
-    return res.status(200).json(contents)
+    const contents = await Content.findAll();
+    return res.status(200).json(contents);
   } catch (error) {
-    return res.status(500).send(error.message)
+    return res.status(500).send(error.message);
   }
 }
 
 //cheackAdmin porque el Admin puede traer todas las fotos de todos los id de la web
 async function getOneContent(req, res) {
   try {
-    const content = await Contents.findByPk(req.params.id)
+    const content = await Contents.findByPk(req.params.id);
     if (content) {
-      return res.status(200).json(content)
+      return res.status(200).json(content);
     } else {
-      return res.status(404).json("Content not found")
+      return res.status(404).json("Content not found");
     }
   } catch (error) {
-    res.status(500).send(error.message)
+    res.status(500).send(error.message);
   }
 }
 
@@ -31,14 +31,15 @@ por el id mientras pertenezca a la familia*/
 async function getFamContent(req, res) {
   try {
     const content = await Content.findByPk(req.params.id);
-    const ownerContent = await User.findByPk(content.userId)
+    const ownerContent = await User.findByPk(content.userId);
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
-    if (user.familyId !== ownerContent.familyId){
-      return res.status(500).send("User not authorized")
-    } if (user.familyId === ownerContent.familyId) {
-      return res.status(200).json(content)
+    if (user.familyId !== ownerContent.familyId) {
+      return res.status(500).send("User not authorized");
+    }
+    if (user.familyId === ownerContent.familyId) {
+      return res.status(200).json(content);
     }
   } catch (error) {
     return res.status(500).send(error.message);
@@ -52,31 +53,17 @@ async function getAllFamContent(req, res) {
     const user = await User.findByPk(res.locals.user.id, {
       include: Family,
     });
-    // console.log(user.familyId)
     const contents = await Content.findAll({
       include: [
         {
-        model: User,
-        where: {
-          familyId: user.familyId
-        }
-      }
-    ],
-    })
-
-    const ownersContents = await Content.findOne({
-      where: {
-        userId: user.id
-      },
-      include: [User]
-    })
-    if (user.familyId !== ownersContents.user.familyId){
-      return res.status(404).send("User not authorized");
-    } if (!contents || contents.length === 0) {
-      return res.status(404).send("Content not found");
-    } if (user.familyId === ownersContents.user.familyId) {
-      return res.status(200).json(content)
-    }
+          model: User,
+          where: {
+            familyId: user.familyId,
+          },
+        },
+      ],
+    });
+    return res.status(200).json(contents);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -84,15 +71,15 @@ async function getAllFamContent(req, res) {
 
 async function createContent(req, res) {
   try {
-    const user = await User.findByPk(res.locals.user.id)
+    const user = await User.findByPk(res.locals.user.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' })
+      return res.status(404).json({ message: "User not found" });
     }
     const contentData = {
       ...req.body,
       userId: user.id,
     };
-    const content = await Content.create(contentData)
+    const content = await Content.create(contentData);
     return res.status(201).json(content);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -103,12 +90,12 @@ async function deleteContent(req, res) {
   try {
     const content = await Content.destroy({
       where: {
-        id: req.params.id
-      }
-    })
-    res.status(500).json({ text: 'Content removed', content: content })
+        id: req.params.id,
+      },
+    });
+    res.status(500).json({ text: "Content removed", content: content });
   } catch (error) {
-    return res.status(500).send(error.message)
+    return res.status(500).send(error.message);
   }
 }
 
@@ -118,5 +105,5 @@ module.exports = {
   getFamContent,
   getAllFamContent,
   createContent,
-  deleteContent
-}
+  deleteContent,
+};
