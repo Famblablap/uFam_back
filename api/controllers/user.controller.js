@@ -1,6 +1,7 @@
 const Family = require("../models/family.model");
 const User = require("../models/user.model");
 const dayjs = require('dayjs')
+const bcrypt = require('bcrypt')
 
 
 async function getAllUsers(req, res) {
@@ -69,7 +70,13 @@ async function getFamProfile(req, res) {
 }  */
 
 async function updateUser(req, res) {
-  const newDate = dayjs(req.body.dob).format("YYYY-MM-DD");
+const password = req.body.password
+const saltRounds = bcrypt.genSaltSync(parseInt(process.env.SALTROUNDS))
+const hashedPassword = bcrypt.hashSync(password, saltRounds)
+req.body.password = hashedPassword
+
+  const newDate = dayjs(req.body.dob, "MM-DD-YYYY").format("YYYY-MM-DD");
+  req.body.dob = newDate
   try {
     const user = await User.update(
       {
