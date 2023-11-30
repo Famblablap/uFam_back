@@ -44,8 +44,9 @@ async function getAllFamMessages(req, res) {
   try {
     const userL = await User.findByPk(res.locals.user.id)
     const familyMessages = await Message.findAll({
+      include: User,
       where: {
-        userId: userL.id
+        receiver_id: userL.id
       } 
     }) 
     return res.status(200).json(familyMessages);
