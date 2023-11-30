@@ -12,6 +12,21 @@ async function getAllContent(req, res) {
   }
 }
 
+async function getMyContent(req, res) {
+  try {
+    const user = res.locals.user.id
+    const contents = await Content.findAll({
+      where: {
+        userId: user
+      }
+    })
+    console.log(user)
+    return res.status(200).json(contents);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
 //cheackAdmin porque el Admin puede traer todas las fotos de todos los id de la web
 async function getOneContent(req, res) {
   try {
@@ -28,18 +43,45 @@ async function getOneContent(req, res) {
 
 /*solo checkAuth porque todos pueden acceder a una foto de un usuario especifico 
 por el id mientras pertenezca a la familia*/
+// async function getFamContent(req, res) {
+//   try {
+//     const content = await Content.findByPk(req.params.id);
+//     const ownerContent = await User.findByPk(content.userId);
+//     const user = await User.findByPk(res.locals.user.id, {
+//       include: Family,
+//     });
+//     if (user.familyId !== ownerContent.familyId) {
+//       return res.status(500).send("User not authorized");
+//     }
+//     if (user.familyId === ownerContent.familyId) {
+//       return res.status(200).json(content);
+//     }
+//   } catch (error) {
+//     return res.status(500).send(error.message);
+//   }
+// }
+
 async function getFamContent(req, res) {
   try {
-    const content = await Content.findByPk(req.params.id);
-    const ownerContent = await User.findByPk(content.userId);
-    const user = await User.findByPk(res.locals.user.id, {
+    const userL = await User.findByPk(res.locals.user.id, {
       include: Family,
-    });
-    if (user.familyId !== ownerContent.familyId) {
+    })
+
+    const user = await User.findByPk(req.params.id)
+
+    if (user.familyId !== userL.familyId) {
       return res.status(500).send("User not authorized");
-    }
-    if (user.familyId === ownerContent.familyId) {
-      return res.status(200).json(content);
+    } else {
+    
+      const content = await Content.findAll({
+      include: User,
+        where: {
+          userId: user,
+          familyId: userL.familyId
+        }
+      
+    })
+    return res.status(200).json(content);
     }
   } catch (error) {
     return res.status(500).send(error.message);
@@ -101,6 +143,7 @@ async function deleteContent(req, res) {
 
 module.exports = {
   getAllContent,
+  getMyContent,
   getOneContent,
   getFamContent,
   getAllFamContent,
