@@ -14,13 +14,13 @@ async function getAllContent(req, res) {
 
 async function getMyContent(req, res) {
   try {
-    const user = res.locals.user.id
+    const user = res.locals.user.id;
     const contents = await Content.findAll({
       where: {
-        userId: user
-      }
-    })
-    console.log(user)
+        userId: user,
+      },
+    });
+    console.log(user);
     return res.status(200).json(contents);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -65,23 +65,27 @@ async function getFamContent(req, res) {
   try {
     const userL = await User.findByPk(res.locals.user.id, {
       include: Family,
-    })
+    });
 
-    const user = await User.findByPk(req.params.id)
+    const user = await User.findByPk(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
     if (user.familyId !== userL.familyId) {
       return res.status(500).send("User not authorized");
     } else {
-    
       const content = await Content.findAll({
-      include: User,
         where: {
-          userId: user,
-          familyId: userL.familyId
-        }
-      
-    })
-    return res.status(200).json(content);
+          userId: user.id,
+        },
+        include: {
+          model: User,
+          attributes: ["id", "name", "familyId"],
+        },
+      })
+      return res.status(200).json(content);
     }
   } catch (error) {
     return res.status(500).send(error.message);
