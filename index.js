@@ -8,7 +8,7 @@ const { setRelations } = require("./database/models");
 async function connectDB() {
   await checkConnection();
   setRelations();
-  await syncModels();
+  await syncModels("alter");
 }
 
 function launchServer() {
