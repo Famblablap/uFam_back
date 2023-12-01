@@ -18,7 +18,7 @@ async function getCommentsContent(req, res) {
 
 async function createCommentContent(req, res) {
     try {
-        console.log("hola")
+        // console.log("hola")
         const comment = await Comment_Contents.create(req.body)
         const user = await User.findByPk(res.locals.user.id)
         if (!user) { res.status(404).send('User not found') }
