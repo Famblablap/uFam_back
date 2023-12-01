@@ -19,6 +19,7 @@ async function getMyContent(req, res) {
       where: {
         userId: user,
       },
+      order: [['id', 'DESC']],
     });
     console.log(user);
     return res.status(200).json(contents);
@@ -83,6 +84,7 @@ async function getFamContent(req, res) {
         include: {
           model: User,
         },
+        order: [['id', 'DESC']],
       })
       return res.status(200).json(content)
     }
@@ -107,6 +109,7 @@ async function getAllFamContent(req, res) {
           },
         },
       ],
+      order: [['id', 'DESC']],
     });
     return res.status(200).json(contents);
   } catch (error) {
